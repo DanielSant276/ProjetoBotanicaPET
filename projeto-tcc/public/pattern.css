@@ -1,0 +1,52 @@
+/*Configuração padrão de CSS*/
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section, div, a {
+  display: flex;
+}
+
+p {
+  /* font-family: Antic Didone; */
+  font-style: normal;
+  font-weight: normal;
+  color: #000000;
+}
+
+a, .link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.align {
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.not-selectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.white-color {
+  color: #ffffff
+}
+
+.red-color {
+  color: #ff0000
+}

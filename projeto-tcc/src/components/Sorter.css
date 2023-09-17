@@ -1,0 +1,31 @@
+.sorter-grid-extern {
+  height: 46%;
+  width: 300px;
+  border: 1px solid #ff00ff;
+
+  position: fixed;
+  align-self: center;
+  top: 2%;
+}
+
+.sorter-grid-intern {
+  width: auto;
+  height: 100%;
+  margin: 20px 20px 10px 20px;
+  border: 1px solid #ff00ff;
+}
+
+.sorted-number {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+  font-size: 100px;
+  color: #ffffff;
+}
+
+.sorter-next-button {
+  width: auto;
+  height: 15%;
+  margin: 10px 20px 20px;
+  border: 1px solid #ff00ff;
+}
