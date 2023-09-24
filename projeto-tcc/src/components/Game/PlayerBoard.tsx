@@ -42,8 +42,8 @@ export function PlayerBoard({
 
       if (!gridSelected.includes(false)) {
         setTimeout(() => {
-          alert(`jogador ${name} ganhou`);
-          setStartGame(false);
+          // alert(`jogador ${name} ganhou`);
+          // setStartGame(false);
         }, 100);
       }
     }

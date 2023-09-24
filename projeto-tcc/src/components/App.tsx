@@ -6,9 +6,8 @@ import { ConfigScreen } from "./Config/ConfigScreen";
 
 export default function App() {
   const [startGame, setStartGame] = useState<boolean>(false);
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<string[]>(['a', 'b', 'c']);
   const [sortedNumber, setSortedNumber] = useState<number>(-1);
-  const numbersSorted = useRef<number[]>([]);
 
   const getPositions = () => {
     switch (players.length) {
@@ -27,25 +26,6 @@ export default function App() {
         ];
     }
   };
-
-  const generateNextNumber = () => {
-    let newNumber = -1;
-    while (numbersSorted.current.includes(newNumber) || newNumber < 0) {
-      newNumber = Math.floor(Math.random() * 21);
-    }
-
-    numbersSorted.current.push(newNumber);
-    setSortedNumber(newNumber);
-
-    numbersSorted.current.sort((a, b) => a - b);
-    console.log(numbersSorted.current);
-  };
-
-  useEffect(() => {
-    if (startGame) {
-      generateNextNumber();
-    }
-  }, [startGame]);
 
   return (
     <div className="Screen column">
@@ -70,8 +50,7 @@ export default function App() {
           })}
 
           <Sorter
-            sortedNumber={sortedNumber}
-            generateNextNumber={generateNextNumber}
+            sendSortedNumber={setSortedNumber}
             startGame={startGame}
             setStartGame={setStartGame}
           />

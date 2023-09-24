@@ -1,3 +1,10 @@
+/* Variáveis de Ambiente */
+:root {
+  --border: 2px;
+  --cardWidth: 260px;
+  --cardHeight: 260px;
+}
+
 /*Configuração padrão de CSS*/
 body {
   display: flex;

@@ -1,25 +1,38 @@
 .sorter-grid-extern {
-  height: 46%;
-  width: 300px;
+  height: 324px;
+  width: var(--cardWidth);
+  padding: 20px;
   border: 1px solid #ff00ff;
 
   position: fixed;
   align-self: center;
   top: 2%;
+
+  overflow: hidden;
+  background-color: #000000;
 }
 
 .sorter-grid-intern {
-  width: auto;
-  height: 100%;
-  margin: 20px 20px 10px 20px;
+  z-index: 10;
+  width: var(--cardWidth);
+  /* max-height: 260px; */
+  min-height: var(--cardHeight);
   border: 1px solid #ff00ff;
+
+  overflow: hidden;
+  background-color: #ffffff;
 }
 
 .sorter-image-box {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  z-index: -1;
+  width: calc(var(--cardWidth) - var(--border));
+  /* margin-left: -100px; */
+  height: calc(var(--cardHeight) - var(--border));
+  position: absolute;
   border: 1px solid #ff00ff;
+
+  overflow: hidden;
+  background-color: #282c34;
 }
 
 .sorted-number {
@@ -27,12 +40,29 @@
   text-align: center;
   width: 100%;
   font-size: 100px;
-  color: #ffffff;
 }
 
 .sorter-next-button {
-  width: auto;
+  width: 260px;
   height: 15%;
-  margin: 10px 20px 20px;
   border: 1px solid #ff00ff;
+  margin-top: 20px;
+}
+
+.gambiarra1 {
+  position: absolute;
+  width: 20px;
+  height: var(--cardHeight);
+  margin-left: -21px;
+  border-right: 2px solid #ff00ff;
+  background-color: #000000;
+}
+
+.gambiarra2 {
+  position: absolute;
+  width: 18px;
+  height: var(--cardHeight);
+  margin-left: calc(var(--cardWidth) - 1px);
+  border-left: 2px solid #ff00ff;
+  background-color: #000000;
 }
