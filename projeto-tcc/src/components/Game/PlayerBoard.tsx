@@ -10,14 +10,7 @@ export function PlayerBoard({
   setStartGame,
 }: Props) {
   const [gridPositions, setGridPositions] = useState<number[]>([]);
-  const [gridSelected, setGridSelected] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [gridSelected, setGridSelected] = useState<boolean[]>([false, false, false, false, false, false]);
 
   useEffect(() => {
     const generateRandomNumber = () => {

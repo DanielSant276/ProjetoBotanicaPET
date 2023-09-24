@@ -50,3 +50,15 @@ a, .link {
 .red-color {
   color: #ff0000
 }
+
+.text-center {
+  text-align: center;
+}
+
+.visible {
+  display: flex
+}
+
+.not-visible {
+  display: none;
+}

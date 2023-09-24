@@ -1,26 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
-import './App.css';
-import { PlayerBoard } from './PlayerBoard';
-import { Sorter } from './Sorter';
-
-const maxPlayers = 4;
+import { Fragment, useEffect, useRef, useState } from "react";
+import "./App.css";
+import { PlayerBoard } from "./Game/PlayerBoard";
+import { Sorter } from "./Game/Sorter";
+import { ConfigScreen } from "./Config/ConfigScreen";
 
 export default function App() {
   const [startGame, setStartGame] = useState<boolean>(false);
-  const [players, setPlayers] = useState<string[]>(['Daniel', 'Ayrton', 'A', 'B']);
+  const [players, setPlayers] = useState<string[]>([]);
   const [sortedNumber, setSortedNumber] = useState<number>(-1);
   const numbersSorted = useRef<number[]>([]);
 
   const getPositions = () => {
     switch (players.length) {
       case 1:
-        return ['center'];
+        return ["center"];
       case 2:
-        return ['bottom-left-only-2-bottom', 'bottom-right-only-2-bottom'];
+        return ["bottom-left-only-2-bottom", "bottom-right-only-2-bottom"];
       case 3:
-        return ['bottom-left', 'center', 'bottom-right'];
+        return ["bottom-left", "center", "bottom-right"];
       case 4:
-        return ['bottom-left-only-2-bottom', 'bottom-right-only-2-bottom', 'top-left', 'top-right'];
+        return [
+          "top-left",
+          "top-right",
+          "bottom-left-only-2-bottom",
+          "bottom-right-only-2-bottom",
+        ];
     }
   };
 
@@ -44,27 +48,35 @@ export default function App() {
   }, [startGame]);
 
   return (
-    <div className='Screen column'>
-      {players.map((item, index) => {
-        let positions = getPositions();
+    <div className="Screen column">
+      {players.length === 0 ? (
+        <Fragment>
+          <ConfigScreen setPlayers={setPlayers} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          {players.map((item, index) => {
+            let positions = getPositions();
 
-        return (
-          <PlayerBoard
-            key={index}
-            name={players[index]}
-            position={positions ? positions[index] : ''}
+            return (
+              <PlayerBoard
+                key={index}
+                name={players[index]}
+                position={positions ? positions[index] : ""}
+                sortedNumber={sortedNumber}
+                setStartGame={setStartGame}
+              />
+            );
+          })}
+
+          <Sorter
             sortedNumber={sortedNumber}
+            generateNextNumber={generateNextNumber}
+            startGame={startGame}
             setStartGame={setStartGame}
           />
-        );
-      })}
-
-      <Sorter
-        sortedNumber={sortedNumber}
-        generateNextNumber={generateNextNumber}
-        startGame={startGame}
-        setStartGame={setStartGame}
-      />
+        </Fragment>
+      )}
     </div>
   );
 }
