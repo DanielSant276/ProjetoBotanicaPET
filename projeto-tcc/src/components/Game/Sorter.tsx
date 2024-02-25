@@ -8,14 +8,16 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
   const [sortedNumber, setSortedNumber] = useState<number>(-1);
   const [numbersSorted, setNumbersSorted] = useState<boolean[]>([]);
   const [divDesmounted, setDivDesmounted] = useState<boolean[]>([]);
-  const [timesRotated, setTimesRotated] = useState<number>(0);
+  const [laps, setLaps] = useState<number>(0);
   
-  const [disableButton, setDisableButton] = useState<boolean>(false);
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const [animationStoped, setAnimationStoped] = useState<boolean>(true);
   const [moveToLeft, setMoveToLeft] = useState<number>(0);
-  const [animationStoped, setAnimationStoped] = useState<boolean>(false);
 
   const leftoverNumbers = useRef<number[]>([]);
   const intervalId = useRef<NodeJS.Timer>();
+  const completeLaps = useRef<number[]>([]);
+  const speed = useRef<number>(0);
 
   const generateAnimation = () => {
     // if (sortedNumber !== -1) {
@@ -26,7 +28,7 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
     //   }
     // }
 
-    setDisableButton(true);
+    setStartAnimation(true);
 
     let index = Math.floor(Math.random() * leftoverNumbers.current.length);
     let number = leftoverNumbers.current[index];
@@ -34,28 +36,32 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
     console.log(number);
 
     let rotation = Math.floor(Math.random() * 10) + 15;
-    setTimesRotated(rotation);
+    setLaps(1);
     console.log(`número de voltas: ${rotation}`);
 
-    let speed = 500;
+    let setSpeed = 20;
+    speed.current = setSpeed;
+
+    setAnimationStoped(false);
 
     intervalId.current = setInterval(() => {
-      setMoveToLeft(prevPosition => prevPosition + speed);
-      speed -= 2;
-      // console.log(speed);
+      setMoveToLeft(prevPosition => prevPosition + speed.current);
+      if (speed.current > 10) {
+        // speed.current--;
+      }
     }, 100);
   }
 
   useEffect(() => {
-    if (timesRotated > 0) {
-      console.log(`foram dadas: ${timesRotated}`);
+    if (laps > 0) {
+      console.log(`foram dadas: ${laps}`);
     }
-  }, [timesRotated]);
+  }, [laps]);
 
   const stopAnimation = () => {
     clearInterval(intervalId.current);
-    setDisableButton(false);
-    setTimesRotated(0);
+    setStartAnimation(false);
+    // setLaps(0);
   }
 
   // aqui é criado um número e depois marca ele como 'true' no numberSorted, tirando da lista leftoverNumbers
@@ -86,6 +92,7 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
       for (let i = 0; i < totalNumbers; i++) {
         numbersSorted.push(false);
         divDesmounted.push(false);
+        completeLaps.current.push(0);
       }
       console.log(numbersSorted)
       console.log(numbersSorted.length)
@@ -108,57 +115,60 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
         {/* <p className='sorted-number not-selectable'> */}
           {startGame ? (
             numbersSorted.map((item, index) => {              
-              let leftPosition;
+              let leftPosition = 21 - moveToLeft + (divWidth[0] * (index + (totalNumbers * completeLaps.current[index])));
 
-              if (animationStoped && index % totalNumbers === sortedNumber && Math.floor(index / totalNumbers) === timesRotated) {
-                leftPosition = 21;
-              }
-              else {
-                leftPosition = 21 - moveToLeft + (divWidth[0] * index);
+              if (completeLaps.current[sortedNumber] === laps && speed.current !== 10) {
+                speed.current = 10;
               }
 
-              if (leftPosition >= 1060) {
-                return null;
+              if (leftPosition < -238) {
+                completeLaps.current[index]++;
               }
+              // else {
+              //   leftPosition = 21 - moveToLeft + (divWidth[0] * (index + (totalNumbers * completeLaps.current[index])))
+              // }
 
-              if (leftPosition <= -810) {
-                if (!divDesmounted[index]) {
-                  let divsStatus = divDesmounted;
-                  divsStatus[index] = true;
-                  divsStatus.push(false);
-                  setDivDesmounted(divsStatus);
+              // if (speed.current === 0 && sortedNumber !== index && startAnimation) {
+              //   leftPosition = 21 + (divWidth[0] * (index + (totalNumbers * (completeLaps.current[index])) + 1))
+              // }
 
-                  let newNumbersSorted = numbersSorted;
-                  newNumbersSorted.push(item);
-                  setNumbersSorted(newNumbersSorted);
-
-                  if (index % totalNumbers === 0) {
-                    setTimesRotated(prevState => prevState++)
-                  }
+              if (speed.current === 10) {
+                if (!animationStoped) {
+                  clearInterval(intervalId.current);
+                  setAnimationStoped(true);
                 }
-                return null;
+                let divLeftPosition = parseInt(document.getElementById(`sorter-image-box-${sortedNumber}`)?.style.left.replace('px', '')!);
+                
+                if (divLeftPosition - speed.current > 21) {
+                  leftPosition = divLeftPosition - speed.current
+                }
+                else if (divLeftPosition - speed.current < 21) {
+                  leftPosition = 21;
+                  speed.current = 0;
+                }
+                else {
+                  leftPosition = leftPosition - speed.current;
+                }
               }
 
-              let value = index % totalNumbers;
-              if (leftPosition < 21 && index % totalNumbers === sortedNumber && Math.floor(index / totalNumbers) === timesRotated) {
-                setAnimationStoped(true);
-                stopAnimation();
+              
 
-                return null;
-              }
-              else if (leftPosition !== 21 && index % totalNumbers !== sortedNumber && Math.floor(index / totalNumbers) >= timesRotated) {
-                return null;
-              }
+              // if (animationStoped && index % totalNumbers === sortedNumber && Math.floor(index / totalNumbers) === laps) {
+              //   leftPosition = 21;
+              // }
+              // else {
+              //   leftPosition = 21 - moveToLeft + (divWidth[0] * index);
+              // }
 
-              let val = index % totalNumbers;
 
               return (
                 <div
                   key={index}
+                  id={`sorter-image-box-${index}`}
                   className='sorter-image-box align'
                   style={{left: `${leftPosition}px`}}>
                   <p className={`sorted-number not-selectable ${item ? 'red-color' : 'white-color'}`}>
-                    {val}
+                    {index}
                   </p>
                 </div>
               )
@@ -177,7 +187,7 @@ export function Sorter({ sendSortedNumber, startGame, setStartGame }: Props ) {
         {startGame ? (
           <div
             className='sorter-next-button align link'
-            onClick={disableButton ? () => null : generateAnimation}
+            onClick={startAnimation ? () => null : generateAnimation}
           >    
             <div className='not-selectable'>Próximo</div>
           </div>
