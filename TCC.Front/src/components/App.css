@@ -1,9 +1,14 @@
-.Screen {
-  background-color: #282c34;
-  min-height: 100vh;
-  min-width: 100vw;
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* font-size: calc(10px + 2vmin); */
-  color: white;
+.options-box {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ff00ff;
+  height: 50%;
+  width: 50%;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 25px;
+}
+
+.options-box div {
+  cursor: pointer;
 }

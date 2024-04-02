@@ -1,0 +1,24 @@
+.about-options-box {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ff00ff;
+  height: 25%;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 50px;
+}
+
+.about-text {
+  font-size: 20px;
+  color: white;
+  text-align: justify;
+}
+
+.about-back-button {
+  font-size: 20px;
+  margin-top: 15px;
+  padding: 5px;
+  border: 1px solid #ff00ff;
+  cursor: pointer;
+}

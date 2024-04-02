@@ -66,3 +66,22 @@ a, .link {
 .grayscale {
   filter: grayscale(100%);
 }
+
+.main-screen {
+  display: flex;
+  flex-direction: column;
+  background-color: #282c34;
+  min-height: 100vh;
+  min-width: 100vw;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.title {
+  font-size: 50px;
+  font-weight: bold;
+  color: white;
+  top: 100px;
+  position: absolute;
+}
