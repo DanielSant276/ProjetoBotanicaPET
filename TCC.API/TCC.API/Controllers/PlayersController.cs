@@ -7,30 +7,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TCC.API.Context;
 using TCC.API.Models;
+using TCC.API.Response;
 
 namespace TCC.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class PlayersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly Dictionary<string, string> _connectedClients = new Dictionary<string, string>();
 
         public PlayersController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Players/{id}
+        // GET: Players/GetPlayerById/{id}
         // Pesquisa pelo jogador
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(string ip)
+        public async Task<ActionResult<Player>> GetPlayerById(string id)
         {
-            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Ip == ip);
+            if (id == "" || id == "undefined")
+            {
+                id = Guid.NewGuid().ToString();
+            }
+
+            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == id);
 
             if (player == null)
             {
-                player = new Player(ip);
+                player = new Player(id, "", false);
                 _context.Players.Add(player);
                 await _context.SaveChangesAsync();
             }
@@ -39,25 +46,34 @@ namespace TCC.API.Controllers
         }
 
 
-        // GET: Players/{id}
+        // POST: Players/UpdatePlayerById/{PlayerResponse}
         // Marca um jogador como pronto ou atualiza o nome dele na tela
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> UpdatePlayerReady(string ip, string name, Boolean ready)
+        [HttpPost]
+        public async Task<ActionResult<Player>> UpdatePlayer(PlayerResponse playerResponse)
         {
-            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Ip == ip);
-
-            if (player == null)
+            try
             {
-                player = new Player(ip);
+                Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerResponse.Id);
+
+                if (player == null)
+                {
+                    player = new Player(playerResponse.Id, playerResponse.Name, playerResponse.Ready);
+                    _context.Players.Add(player);
+                }
+
+                player.Name = playerResponse.Name;
+                player.Ready = playerResponse.Ready;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(player);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
 
-            player.Name = name;
-            player.Ready = ready;
-
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
-
-            return Ok(player);
+                return NotFound();
+            }
         }
     }
 }

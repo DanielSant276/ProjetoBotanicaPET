@@ -48,7 +48,7 @@ a, .link {
 }
 
 .red-color {
-  color: #ff0000
+  color: #ff0000 !important
 }
 
 .text-center {
@@ -84,4 +84,8 @@ a, .link {
   color: white;
   top: 100px;
   position: absolute;
+}
+
+p {
+  user-select: none;
 }

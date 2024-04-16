@@ -6,7 +6,7 @@ namespace TCC.API.Models
     [Table("Board")]
     public class Board
     {
-        public Board(int playerId)
+        public Board(string playerId)
         {
             PlayerId = playerId;
         }
@@ -14,7 +14,7 @@ namespace TCC.API.Models
         [Key]
         public int Id { get; set; }
 
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public Player? Player { get; set; }
 

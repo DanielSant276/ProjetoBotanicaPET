@@ -9,14 +9,17 @@ namespace TCC.API.Models
     {
         public Room()
         {
-            Player = new Collection<Player>();
+            Players = new Collection<Player>();
         }
 
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(100)]
+        public string Name { get; set; }
+
         public Boolean Started { get; set; }
 
-        public ICollection<Player> Player { get; set; }
+        public ICollection<Player> Players { get; set; }
     }
 }

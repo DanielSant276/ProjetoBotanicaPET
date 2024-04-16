@@ -7,20 +7,20 @@ namespace TCC.API.Models
     [Table("Player")]
     public class Player
     {
-        public Player(string ip)
+        public Player(string id, string name, Boolean ready)
         {
-            Ip = ip;
+            Id = id;
+            Name = name;
+            Ready = ready;
         }
 
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [MaxLength(255)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
-        public string Ip { get; set; }
-
-        public Boolean? Ready { get; set; }
+        public Boolean Ready { get; set; }
 
         public int? RoomId { get; set; }
 

@@ -261,3 +261,7 @@ G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\runtimes\win\lib\ne
 G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Common.dll
+G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
+G:\Daniel SSD\PDFs\SI\TCCII\TCC.API\TCC.API\bin\Debug\net6.0\System.IO.Pipelines.dll

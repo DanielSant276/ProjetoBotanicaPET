@@ -24,9 +24,9 @@ namespace TCC.API.Controllers
         // GET: Boards
         // Recebe o board de um determinado jogador
         [HttpGet]
-        public async Task<ActionResult<IList<Board>>> GetBoards(string ip)
+        public async Task<ActionResult<IList<Board>>> GetBoards(string id)
         {
-            Board board = await _context.Boards.SingleOrDefaultAsync(x => x.Player.Ip == ip);
+            Board board = await _context.Boards.SingleOrDefaultAsync(x => x.Player.Id == id);
 
             if (board == null)
             {
@@ -38,7 +38,7 @@ namespace TCC.API.Controllers
         // GET: Boards/CreateNewBoard
         // Cria um novo board para um jogador
         [HttpGet("{id}")]
-        public async Task<ActionResult<Board>> CreateNewBoard(int playerId)
+        public async Task<ActionResult<Board>> CreateNewBoard(string playerId)
         {
             Player player = await _context.Players.FindAsync(playerId);
 

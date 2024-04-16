@@ -11,7 +11,7 @@ using TCC.API.Models;
 
 namespace TCC.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class RoomsController : ControllerBase
     {
@@ -38,74 +38,74 @@ namespace TCC.API.Controllers
 
             foreach (Room room in rooms)
             {
-                RoomViewModel roomView = new RoomViewModel(room.Id, room.Started, room.Player.Count());
+                RoomViewModel roomView = new RoomViewModel(room.Id, room.Name, room.Started, room.Players.Count());
                 roomsView.Add(roomView);
             }
 
             return Ok(roomsView);
         }
 
-        // Post: Rooms/5
-        // Inicia uma sala
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Room>> StartRoom(int id, string playerIp)
-        {
-            Room room = await _context.Rooms.FindAsync(id);
+        //// Post: Rooms/5
+        //// Inicia uma sala
+        //[HttpPost("{id}")]
+        //public async Task<ActionResult<Room>> StartRoom(int id, string playerId)
+        //{
+        //    Room room = await _context.Rooms.FindAsync(id);
 
-            if (room == null)
-            {
-                return NotFound();
-            }
+        //    if (room == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            room.Started = true;
+        //    room.Started = true;
 
-            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Ip == playerIp);
+        //    Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
 
-            if (player == null)
-            {
-                player = new Player(playerIp);
-                _context.Players.Add(player);
-            }
+        //    if (player == null)
+        //    {
+        //        player = new Player(playerId);
+        //        _context.Players.Add(player);
+        //    }
 
-            room.Player.Add(player);
+        //    room.Player.Add(player);
 
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+        //    _context.Rooms.Add(room);
+        //    await _context.SaveChangesAsync();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        // Post: Rooms/5
-        // Atualiza os jogadores da sala
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Room>> UpdateRoom(int id, IList<string> playersIp)
-        {
-            Room room = await _context.Rooms.FindAsync(id);
+        //// Post: Rooms/5
+        //// Atualiza os jogadores da sala
+        //[HttpPost("{id}")]
+        //public async Task<ActionResult<Room>> UpdateRoom(int id, IList<string> playersId)
+        //{
+        //    Room room = await _context.Rooms.FindAsync(id);
 
-            if (room == null)
-            {
-                return NotFound();
-            }
+        //    if (room == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            room.Player = new List<Player>();
+        //    room.Player = new List<Player>();
 
-            foreach (string playerIp in playersIp)
-            {
-                Player player = await _context.Players.FirstOrDefaultAsync(x => x.Ip == playerIp);
+        //    foreach (string playerId in playersId)
+        //    {
+        //        Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
 
-                if (player == null)
-                {
-                    player = new Player(playerIp);
-                    _context.Players.Add(player);
-                }
+        //        if (player == null)
+        //        {
+        //            player = new Player(playerId);
+        //            _context.Players.Add(player);
+        //        }
 
-                room.Player.Add(player);
-            }
+        //        room.Player.Add(player);
+        //    }
 
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+        //    _context.Rooms.Add(room);
+        //    await _context.SaveChangesAsync();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

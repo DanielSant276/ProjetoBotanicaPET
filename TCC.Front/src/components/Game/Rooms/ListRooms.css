@@ -1,0 +1,83 @@
+.rooms-box {
+  flex-direction: column;
+  border: 1px solid #ff00ff;
+  height: 65%;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+.rooms-title {
+  font-size: 50px;
+  font-weight: bold;
+  color: white;
+  margin-top: 100px;
+  margin-bottom: 15px;
+}
+
+.rooms-chose-room, .rooms-selected-room {
+  flex-direction: column;
+  padding: 10px 30px;
+  margin: 25px 25px 25px 25px;
+  border: 1px solid #ff00ff;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  /* max-height: -webkit-fill-available; */
+  overflow-y: auto;
+}
+
+.rooms-selected-room {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rooms-info {
+  flex-direction: row;
+  justify-content: space-between;  
+  margin: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.rooms-new-room-buttons {
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
+  margin: 0px 25px 30px 25px;
+  width: -webkit-fill-available;
+}
+
+.rooms-new-room {
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid #ff00ff;
+  cursor: pointer;
+}
+
+.rooms-back-button, .rooms-start-button {
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid #ff00ff;
+  cursor: pointer;
+}
+
+.rooms-name-input {
+  height: 25px;
+  margin: 0px 10px 0px 5px;
+}
+
+.rooms-players-name {
+  flex-direction: column;
+}
+
+.rooms-player-name {
+  align-items: center
+}
+
+.rooms-log-message {
+  flex-direction: column;
+}
+
+.rooms-back-button p, .rooms-new-room p, .rooms-chose-room p, .rooms-start-button p, .rooms-players-name p, .rooms-log-message p, .rooms-new-room-buttons p {
+  color: white;
+}
