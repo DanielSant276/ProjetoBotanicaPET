@@ -44,6 +44,7 @@
   max-width: 100%;
   min-height: 20%;
   border: 0.5px solid #ff00ff;
+  cursor: not-allowed;
   /* position: relative; */
   /* padding-bottom: -20px; */
 }
@@ -56,6 +57,7 @@
   border-radius: 10px;
   background-color: rgba(0, 0, 0); /* cor com transparência */
   margin-top: -20px;
+  z-index: 10;
 }
 
 .player-board-grid-image-text {
@@ -108,4 +110,8 @@
   padding: 5px;
   border: 1px solid #ff00ff;
   cursor: pointer;
+}
+
+.clickable {
+  cursor: pointer !important;
 }

@@ -31,7 +31,7 @@
             _sortedNumberIndex[roomId] = index;
         }
 
-        public int GetRoomDrawIndex(string roomId, int index)
+        public int GetRoomDrawIndex(string roomId)
         {
             return _sortedNumberIndex[roomId];
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Numerics;
 using TCC.API.Context;
 using TCC.API.Models;
 using TCC.API.Models.Responses;
@@ -40,26 +41,17 @@ namespace TCC.API.Controllers.SignalR
             // faz o sorteio de todos os números da lista
             for (var i = 0; i < maxNumber; i++)
             {
-                int number = await GenerateNumbers(roomId, maxNumber);
-                numbers.Add(number);
+                Random random = new Random();
+                int randomNumber;
+                do
+                {
+                    randomNumber = random.Next(maxNumber);
+                } while (numbers.Contains(randomNumber));
+
+                numbers.Add(randomNumber);
             }
 
             return numbers;
-        }
-
-        private async Task<int> GenerateNumbers(string roomId, int maxNumber)
-        {
-            // lógica para a geração de número que já não tenham sido sorteados
-            Random random = new Random();
-            var numbers = _storage.GetNumbers(roomId);
-
-            int randomNumber;
-            do
-            {
-                randomNumber = random.Next(maxNumber);
-            } while (numbers.Contains(randomNumber));
-
-            return randomNumber;
         }
 
         public async Task GetNumber(string roomId, int indexNumberSorted)
@@ -67,30 +59,36 @@ namespace TCC.API.Controllers.SignalR
             // fazer um ajuste para verificar se o index atual é maior por um ou igual do que o index registrado se for ok, se não for,
             // enviar todos os números que já foram sorteados para o jogador e ajustar o index dele para o index atual + 1
 
-            _storage.SetRoomDrawIndex(roomId, indexNumberSorted);
+            //int storageIndex = _storage.GetRoomDrawIndex(roomId);
+
+            //if (indexNumberSorted == storageIndex || indexNumberSorted == storageIndex - 1)
+            //{
+            //    _storage.SetRoomDrawIndex(roomId, indexNumberSorted);
+            //}
+
+            //IList<int> allNumbers = _storage.GetNumbers(roomId);
 
             int number = _storage.GetNumber(roomId, indexNumberSorted);
 
-            await Clients.Group($"game-{roomId}").SendAsync("ReceivedNumber", number);
+            await Clients.Caller.SendAsync("ReceivedNumber", number);
         }
 
-        public async Task GenerateBoardNumbers(string roomId, string playerToken, int maxNumber)
+        public async Task GenerateBoardNumbers(string playerId, int maxNumber)
         {
             // gera os números dos tabuleiros do jogador
-            Player player = await _context.Players.FindAsync(playerToken);
+            Player player = await _context.Players.FindAsync(playerId);
 
             if (player == null)
             {
                 return;
             }
 
-            Board board = await _context.Boards.FirstOrDefaultAsync(x => x.PlayerId == playerToken);
+            Board board = await _context.Boards.FirstOrDefaultAsync(x => x.PlayerId == playerId);
 
             if (board == null)
             {
-                board = new Board(playerToken);
+                board = new Board(playerId);
                 board.Id = Guid.NewGuid().ToString();
-                board.PlayerId = playerToken;
                 _context.Boards.Add(board);
             }
 
@@ -137,23 +135,30 @@ namespace TCC.API.Controllers.SignalR
             await Clients.Caller.SendAsync("ReceivedRanking", points);
         }
 
-        //public async Task GetPoint(string roomId, string playerId, string boardId)
-        //{
-        //    // adiciona mais 100 pontos a pontuação do jogador
-        //    Board board = await _context.Boards.FirstOrDefaultAsync(x => x.PlayerId == playerId || x.Id == boardId);
+        public async Task GainPoint(string roomId, string playerId)
+        {
+            // adiciona mais 100 pontos a pontuação do jogador
+            Board board = await _context.Boards.Include(x => x.Player).FirstOrDefaultAsync(x => x.PlayerId == playerId);
 
-        //    if (board == null)
-        //    {
-        //        return;
-        //    }
+            if (board == null)
+            {
+                return;
+            }
 
-        //    board.Points += 100;
+            board.Points += 100;
 
-        //    await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-        //    PlayerPointsResponse player = new PlayerPointsResponse(playerId, board.Points);
+            PlayerPointsResponse player = new PlayerPointsResponse(board.Player.Name, playerId, board.Points);
 
-        //    await Clients.GroupExcept($"game-{roomId}", Context.ConnectionId).SendAsync("AdjustPlayersPoints", board.Points);
-        //}
+            await Clients.GroupExcept($"game-{roomId}", Context.ConnectionId).SendAsync("UpdateRanking", player);
+        }
+
+        public async Task CallBingo(string roomId, string playerId)
+        {
+            Player player = await _context.Players.FindAsync(playerId);
+
+            await Clients.GroupExcept($"game-{roomId}", Context.ConnectionId).SendAsync("CallBingo", player.Name);
+        }
     }
 }

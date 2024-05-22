@@ -1,7 +1,7 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { IRanking } from "../../../interfaces/IRankings";
+import { IRanking } from "../../../interfaces/IRanking";
 
-export const gameStartHub = async (url: string, roomId: string, maxNumber: number, /* user: IPlayer, setUser: (value: IPlayer) => void, */ setConnection: (value: HubConnection) => void) => {
+export const gameStartHub = async (url: string, roomId: string, maxNumber: number, setConnection: (value: HubConnection) => void) => {
   try {
     const connection = new HubConnectionBuilder()
       .withUrl(url)
@@ -47,9 +47,9 @@ export const gameReceivedNumber = (connection: HubConnection, callback: (number:
   connection.on("ReceivedNumber", callback);
 };
 
-export const gameGetBoard = (connection: HubConnection, roomId: string, playerToken: string, maxNumber: number): void => {
+export const gameGetBoard = (connection: HubConnection, playerId: string, maxNumber: number): void => {
   // debugger;
-  connection.invoke("GenerateBoardNumbers", roomId, playerToken, maxNumber);
+  connection.invoke("GenerateBoardNumbers", playerId, maxNumber);
 }
 
 export const gameReceivedBoard = (connection: HubConnection, callback: (value: string) => void): void => {
@@ -65,4 +65,24 @@ export const gameGetRanking = (connection: HubConnection, roomId: string): void 
 export const gameReceivedRanking = (connection: HubConnection, callback: (ranking: IRanking[]) => void): void => {
   // debugger;
   connection.on("ReceivedRanking", callback);
+};
+
+export const gameGainPoint = (connection: HubConnection, roomId: string, playerId: string): void => {
+  // debugger;
+  connection.invoke("GainPoint", roomId, playerId);
+}
+
+export const gameUpdateRanking = (connection: HubConnection, callback: (ranking: IRanking) => void): void => {
+  // debugger;
+  connection.on("UpdateRanking", callback);
+};
+
+export const gameCallBingo = (connection: HubConnection, roomId: string, playerId: string): void => {
+  // debugger;
+  connection.invoke("CallBingo", roomId, playerId);
+}
+
+export const gameEndGame = (connection: HubConnection, callback: (playerName: string) => void): void => {
+  // debugger;
+  connection.on("CallBingo", callback);
 };
