@@ -1,0 +1,90 @@
+.sorter-grid-extern {
+  height: 340px;
+  width: 400px;
+  padding: 15px 20px 15px 20px;
+  border: 2px solid #ff00ff;
+
+  position: absolute;
+  align-self: center;
+  top: 2%;
+}
+
+.sorter-timer-text {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sorter-row-items {
+  width: 100%;
+  height: calc(100% - 20px);
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.sorter-ranking-space {
+  width: 100px;
+  height: 100px;
+}
+
+.sorter-ranking-space p {
+  margin-bottom: 10px;
+}
+
+.sorter-grid-intern {
+  margin: 0px 0px 0px 20px;
+  width: 240px;
+  border: 2px solid #ff00ff;
+  flex-direction: column;
+}
+
+.sorter-board-image-text {
+  color: #ff00ff;
+  font-size: 20px;
+}
+
+.sorter-overlay {
+  position: absolute;
+  bottom: 18px;
+  width: fit-content;
+  height: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0); /* cor com transparência */
+}
+
+.sorter-image-box {
+  position: relative;
+  /* width: 80%; */
+  /* height: 00%; */
+  border: 1px solid #ff00ff;
+  left: 0px;
+}
+
+.sorted-number {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+  font-size: 100px;
+  color: #ffffff;
+}
+
+.sorter-next-button {
+  width: auto;
+  height: 15%;
+  margin: 10px 20px 20px;
+  border: 1px solid #ff00ff;
+}
+
+.sorter-board-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+p {
+  color: #ffffff;
+}

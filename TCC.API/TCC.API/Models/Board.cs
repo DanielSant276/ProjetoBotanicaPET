@@ -12,7 +12,7 @@ namespace TCC.API.Models
         }
 
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string PlayerId { get; set; }
 

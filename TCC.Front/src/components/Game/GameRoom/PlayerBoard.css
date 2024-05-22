@@ -1,0 +1,111 @@
+.player-board-extern {
+  width: 450px;
+  border: 2px solid #ff00ff;
+  margin: 15px 15px 0px 15px;
+  position: absolute;
+  bottom: 30px;
+}
+
+.player-board-header {
+  margin: 15px;
+  justify-content: space-between;
+}
+
+.player-board-name {
+  text-align: center;
+  font-size: 30px;
+}
+
+.player-board-intern {
+  width: auto;
+  border: 0.5px solid #ff00ff;
+  margin: 0px 15px 15px 15px;
+  height: 240px;
+}
+
+.player-board-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  object-fit: cover;
+  /* position: absolu */
+}
+
+.player-board-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.player-board-grid-cell {
+  max-width: 100%;
+  min-height: 20%;
+  border: 0.5px solid #ff00ff;
+  /* position: relative; */
+  /* padding-bottom: -20px; */
+}
+
+.player-board-overlay {
+  bottom: 18px;
+  width: fit-content;
+  height: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0); /* cor com transparência */
+  margin-top: -20px;
+}
+
+.player-board-grid-image-text {
+  color: #ff00ff;
+  font-size: 13px;
+}
+
+.player-board-top-left {
+  position: fixed;
+  left: 3%;
+}
+
+.player-board-top-right {
+  position: fixed;
+  right: 3%;
+}
+
+.player-board-center {
+  position: fixed;
+  bottom: 2%;
+  left: 34%;
+}
+
+.player-board-bottom-left-only-2-bottom {
+  position: fixed;
+  bottom: 2%;
+  left: 12%
+}
+
+.player-board-bottom-right-only-2-bottom {
+  position: fixed;
+  bottom: 2%;
+  right: 12%
+}
+
+.player-board-bottom-left {
+  position: fixed;
+  bottom: 2%;
+  left: 2%
+}
+
+.player-board-bottom-right {
+  position: fixed;
+  bottom: 2%;
+  right: 2%
+}
+
+.player-board-bingo-button, .player-board-check-button {
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid #ff00ff;
+  cursor: pointer;
+}

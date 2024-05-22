@@ -1,7 +1,7 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { IPlayer } from "../../../interfaces/IPlayer";
 
-export const roomStartHub = async (url: string, roomId: number, user: IPlayer, setUser: (value: IPlayer) => void, setConnection: (value: HubConnection) => void) => {
+export const roomStartHub = async (url: string, roomId: string, user: IPlayer, getStartedGame: () => boolean, setUser: (value: IPlayer) => void, setConnection: (value: HubConnection) => void) => {
   try {
     const connection = new HubConnectionBuilder()
       .withUrl(url)
@@ -19,19 +19,27 @@ export const roomStartHub = async (url: string, roomId: number, user: IPlayer, s
 
       // Ajustes para retirar o usuário da sala ao recarregar ela
       window.addEventListener("beforeunload", () => {
-        roomSendActionToHub(connection, roomId, user, setUser);
+        if (!getStartedGame()) {
+          roomSendActionToHub(connection, roomId, user, setUser);
+        }
       });
 
       window.addEventListener("unload", () => {
-        roomSendActionToHub(connection, roomId, user, setUser);
+        if (!getStartedGame()) {
+          roomSendActionToHub(connection, roomId, user, setUser);
+        }
       });
 
       window.addEventListener("popstate", () => {
         // eslint-disable-next-line no-restricted-globals
         if (history.state) {
+          if (!getStartedGame()) {
             roomSendActionToHub(connection, roomId, user, setUser);
+          }
         } else {
+          if (!getStartedGame()) {
             roomSendActionToHub(connection, roomId, user, setUser);
+          }
         }
       });
   }
@@ -42,8 +50,8 @@ export const roomStartHub = async (url: string, roomId: number, user: IPlayer, s
 };
 
 // fecha a conexão do hub
-export const roomSendActionToHub = async (connection: HubConnection, roomId: number, user: IPlayer, setUser: (value: IPlayer) => void) =>  {
-  connection.invoke("CloseCoonection", roomId, user.id);
+export const roomSendActionToHub = async (connection: HubConnection, roomId: string, user: IPlayer, setUser: (value: IPlayer) => void) =>  {
+  connection.invoke("CloseConection", roomId, user.id);
   let updateUser = user;
   updateUser.ready = false;
   setUser(updateUser);
@@ -62,7 +70,7 @@ export const roomOnReceiveReadyStatus = (connection: HubConnection, callback: (i
 };
 
 //entra na sala
-export const roomJoinPlayerInRoom = (connection: HubConnection, roomId: number, userId: string): void => {
+export const roomJoinPlayerInRoom = (connection: HubConnection, roomId: string, userId: string): void => {
   // debugger;
   connection.invoke("JoinPlayerInRoom", roomId, userId);
 }
@@ -80,7 +88,7 @@ export const roomGetPlayersInRoom = (connection: HubConnection, callback: (playe
 }
 
 // update player status
-export const roomUpdatePlayer = (connection: HubConnection, roomId: number, userId: string, ready: boolean) => {
+export const roomUpdatePlayer = (connection: HubConnection, roomId: string, userId: string, ready: boolean) => {
   // debugger;
   connection.invoke("UpdatePlayerInRoom", roomId, userId, ready);
 }
@@ -95,13 +103,14 @@ export const roomRemovePlayer = (connection: HubConnection, callback: (player: I
   connection.on("RemovePlayer", callback);
 }
 
-
-
-
-
 export const roomChatLog = (connection: HubConnection, callback: (msg: string) => void) => {
   // debugger;
   connection.on("Chat", callback);
+}
+
+export const roomStartGame = (connection: HubConnection, callback: (roomId: string) => void) => {
+  // debugger;
+  connection.on("StartGame", callback);
 }
 
 // recebe qualquer erro

@@ -22,7 +22,7 @@ namespace TCC.API.Models
 
         public Boolean Ready { get; set; }
 
-        public int? RoomId { get; set; }
+        public string? RoomId { get; set; }
 
         public Room? Room { get; set; }
     }

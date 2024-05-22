@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TCC.API.Context;
 using TCC.API.Models;
-using TCC.API.Response;
+using TCC.API.Models.Responses;
 
 namespace TCC.API.Controllers
 {
@@ -45,9 +45,8 @@ namespace TCC.API.Controllers
             return Ok(player);
         }
 
-
-        // POST: Players/UpdatePlayerById/{PlayerResponse}
-        // Marca um jogador como pronto ou atualiza o nome dele na tela
+        // POST: Players/UpdatePlayer/{PlayerResponse}
+        // Atualiza o nome do jogador
         [HttpPost]
         public async Task<ActionResult<Player>> UpdatePlayer(PlayerResponse playerResponse)
         {
@@ -74,6 +73,33 @@ namespace TCC.API.Controllers
 
                 return NotFound();
             }
+        }
+
+        // GET: Players/VerifyPlayerInRoom/{PlayerResponse}
+        // Verifica se o jogador está em uma sala que o jogo já tenha iniciado
+        [HttpGet]
+        public async Task<ActionResult<Player>> VerifyPlayerInRoom(string playerId)
+        {
+            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
+
+            if (player == null)
+            {
+                return Ok("Jogador não encontrado");
+            }
+
+            Room room = await _context.Rooms.FirstOrDefaultAsync(x => x.Id == player.RoomId);
+
+            if (room == null)
+            {
+                return Ok("Sala não encontrada");
+            }
+
+            if (room.Started)
+            {
+                return Ok(room.Id);
+            }
+
+            return Ok("Sala não iniciada");
         }
     }
 }

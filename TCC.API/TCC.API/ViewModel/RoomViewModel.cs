@@ -8,7 +8,7 @@ namespace TCC.API.DTO
     public class RoomViewModel
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -16,7 +16,7 @@ namespace TCC.API.DTO
 
         public int NumberOfPlayers { get; set; }
 
-        public RoomViewModel(int id, string name, bool started, int numberOfPlayers)
+        public RoomViewModel(string id, string name, bool started, int numberOfPlayers)
         {
             Id = id;
             Name = name;

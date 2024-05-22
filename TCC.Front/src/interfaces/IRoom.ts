@@ -1,5 +1,5 @@
 export interface IRoom {
-  id: number;
+  id: string;
   name: string;
   numberOfPlayers: number;
   started: boolean;

@@ -2,8 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using TCC.API.Context;
 using TCC.API.Controllers.SignalR;
+using TCC.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Adicionado o singleton
+builder.Services.AddSingleton<GameStorage>();
 
 // Adicionado SignalR
 builder.Services.AddSignalR(options =>
@@ -59,7 +63,6 @@ app.MapControllers();
 app.UseCors("reactApp");
 
 app.MapHub<RoomHub>("/Roomhub");
-app.MapHub<LobbyHub>("/LobbyHub");
-app.MapHub<MatchHub>("/MatchHub");
+app.MapHub<GameHub>("/Gamehub");
 
 app.Run();

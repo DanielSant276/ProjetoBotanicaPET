@@ -1,14 +1,31 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import GameRoomScreen from './components/Game/GameRoom/GameRoomScreen';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />
+  },
+  {
+    path: '/Room/:gameId',
+    element: <GameRoomScreen />
+  },
+  {
+    path: '/RoomTest',
+    element: <GameRoomScreen />
+  }
+]);
+
 root.render(
   // <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   // </React.StrictMode>
 );
 

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TCC.API.Context;
 using TCC.API.DTO;
 using TCC.API.Models;
+using TCC.API.Models.Requests;
 
 namespace TCC.API.Controllers
 {
@@ -27,7 +28,7 @@ namespace TCC.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IList<RoomViewModel>>> GetRooms()
         {
-            IList<Room> rooms = await _context.Rooms.ToListAsync();
+            IList<Room> rooms = await _context.Rooms.Include(room => room.Players).ToListAsync();
 
             if (_context.Rooms == null)
             {
@@ -43,6 +44,37 @@ namespace TCC.API.Controllers
             }
 
             return Ok(roomsView);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IList<RoomViewModel>>> CreateRoom([FromBody] CreateRoomRequest createRoomRequest)
+        {
+            Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == createRoomRequest.user.Id);
+
+            if (player != null) 
+            {
+                Room room = new Room();
+                room.Id = Guid.NewGuid().ToString();
+                room.Name = createRoomRequest.roomName;
+                room.Started = false;
+                
+                try 
+                { 
+                    _context.Rooms.Add(room);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return NotFound();
+                }
+
+                return Ok(room);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         //// Post: Rooms/5

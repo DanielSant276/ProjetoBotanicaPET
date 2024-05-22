@@ -6,12 +6,13 @@ import Cookies from "js-cookie";
 import { getUser } from "./Game/Api/useUser";
 import { IPlayer } from "../interfaces/IPlayer";
 import ListRooms from "./Game/Rooms/ListRooms";
+import { verifyPlayerInRoom } from "./Game/Api/useRooms";
 
 const playerPlaceHolder: IPlayer = {
   id: "",
   name: "",
   ready: false,
-}
+};
 
 export default function App() {
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
@@ -19,26 +20,42 @@ export default function App() {
   const [screen, setScreen] = useState<number>(0);
 
   useEffect(() => {
-    let userToken = Cookies.get('userToken');
+    let userToken = Cookies.get("userToken");
 
     const fetchUser = async () => {
       const user = await getUser(userToken);
 
       if (user) {
         if (!userToken) {
-          Cookies.set('userToken', user.id);
+          Cookies.set("userToken", user.id, { expires: 30 });
         }
-        
+
         let newUser: IPlayer = {
           id: user.id,
           name: user.name === undefined ? "" : user.name,
-          ready: false
-        }
+          ready: false,
+        };
 
         setUser(newUser);
         setScreenLoaded(true);
+
+        fetchPlayerInRoom(user.id);
       }
-    }
+    };
+
+    const fetchPlayerInRoom = async (userId: string) => {
+      const room = await verifyPlayerInRoom(userId);
+
+      if (room === "Jogador não encontrado") {
+        console.log("Jogador não encontrado");
+      } else if (room === "Sala não encontrada" || room === undefined || room === null) {
+        console.log("Sala não encontrada");
+      } else if (room === "Sala não iniciada") {
+        console.log("Sala não iniciada");
+      } else if (typeof room === 'string') {
+        window.location.href = `/Room/${room}`;
+      }
+    };
 
     fetchUser();
   }, []);
@@ -46,10 +63,7 @@ export default function App() {
   return (
     <div>
       <Fragment>
-        {!screenLoaded &&
-          <div className="main-screen">
-          </div>
-        }
+        {!screenLoaded && <div className="main-screen"></div>}
 
         {screen === 0 && screenLoaded && (
           <div className="main-screen">
@@ -67,13 +81,9 @@ export default function App() {
           <ListRooms setScreen={setScreen} user={user} setUser={setUser} />
         )}
 
-        {screen === 2 && screenLoaded && (
-          <About setScreen={setScreen} />
-        )}
+        {screen === 2 && screenLoaded && <About setScreen={setScreen} />}
 
-        {screen === 3 && screenLoaded && (
-          <Info setScreen={setScreen} />
-        )}
+        {screen === 3 && screenLoaded && <Info setScreen={setScreen} />}
       </Fragment>
     </div>
   );

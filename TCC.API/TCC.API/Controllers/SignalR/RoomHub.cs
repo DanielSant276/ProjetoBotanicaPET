@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TCC.API.Context;
 using TCC.API.Models;
-using TCC.API.Response;
+using TCC.API.Models.Responses;
 
 namespace TCC.API.Controllers.SignalR
 {
@@ -22,14 +24,14 @@ namespace TCC.API.Controllers.SignalR
             await Clients.Caller.SendAsync("ReceiveReadyStatus", isReady);
         }
 
-        public async Task JoinGroup(long roomId)
+        public async Task JoinGroup(string roomId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, $"room-{roomId}");
 
             await Clients.Group($"room-{roomId}").SendAsync("JoinGroup", "admin", "Conectado ao grupo");
         }
 
-        public async Task JoinPlayerInRoom(int roomId, string playerId)
+        public async Task JoinPlayerInRoom(string roomId, string playerId)
         {
             Room room = await _context.Rooms.FindAsync(roomId);
             if (room == null)
@@ -47,7 +49,7 @@ namespace TCC.API.Controllers.SignalR
 
             IList<Player> playersInRoom = await _context.Players.Where(p => p.RoomId == roomId).ToListAsync();
             IList<PlayerResponse> allPlayers = new List<PlayerResponse>();
-            foreach(Player p in playersInRoom) 
+            foreach (Player p in playersInRoom)
             {
                 PlayerResponse playerResponse = new PlayerResponse(p.Id, p.Name, p.Ready);
                 allPlayers.Add(playerResponse);
@@ -72,12 +74,12 @@ namespace TCC.API.Controllers.SignalR
             }
 
             // Envia as informações do jogador recém-conectado para todos os outros jogadores na sala
-            PlayerResponse userPlayer =  new PlayerResponse(player.Id, player.Name, player.Ready);
+            PlayerResponse userPlayer = new PlayerResponse(player.Id, player.Name, player.Ready);
             await Clients.GroupExcept($"room-{roomId}", Context.ConnectionId).SendAsync("NewPlayerConnected", userPlayer);
             await ChatMessage(roomId, $"Jogador {userPlayer.Name} acabou de se conectar");
         }
 
-        public async Task UpdatePlayerInRoom(int roomId, string playerId, bool playerReady)
+        public async Task UpdatePlayerInRoom(string roomId, string playerId, bool playerReady)
         {
             Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
             if (player == null)
@@ -91,14 +93,43 @@ namespace TCC.API.Controllers.SignalR
 
             // Envia as informações do jogador recém-conectado para todos os outros jogadores na sala
             await Clients.GroupExcept($"room-{roomId}", Context.ConnectionId).SendAsync("GetPlayerUpdate", player);
+
+            Room room = await _context.Rooms.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == roomId);
+
+            if (room == null || room.Players.Count() <= 1)
+            {
+                return;
+            }
+
+            bool allPlayersReady = true;
+            foreach (Player playerInRoom in room.Players)
+            {
+                if (!playerInRoom.Ready)
+                {
+                    allPlayersReady = false;
+                    break;
+                }
+            }
+
+            if (allPlayersReady)
+            {
+                await ChatMessage(roomId, "Todos os jogadores estão prontos. O jogo começará em...");
+
+                room.Started = true;
+
+                await _context.SaveChangesAsync();
+
+                await Clients.Group($"room-{roomId}").SendAsync("StartGame", roomId);
+                
+            }
         }
 
-        public async Task ChatMessage(int roomId, string msg)
+        public async Task ChatMessage(string roomId, string msg)
         {
-            await Clients.GroupExcept($"room-{roomId}", Context.ConnectionId).SendAsync("Chat", msg);
+            await Clients.Group($"room-{roomId}").SendAsync("Chat", msg);
         }
 
-        public async Task CloseCoonection(int roomId, string playerId)
+        public async Task CloseConection(string roomId, string playerId)
         {
             Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
             if (player == null)
@@ -107,7 +138,7 @@ namespace TCC.API.Controllers.SignalR
                 return;
             }
 
-            Room room = await _context.Rooms.FindAsync(roomId);
+            Room room = await _context.Rooms.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == roomId);
             if (room == null)
             {
                 await Clients.Caller.SendAsync("Error", "Sala não encontrada.");
@@ -127,7 +158,7 @@ namespace TCC.API.Controllers.SignalR
 
             // Remove o jogador do grupo
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"room-{roomId}");
-            
+
             if (room.Players.Count > 0)
             {
                 // Avisa que o jogador saiu do grupo
