@@ -7,6 +7,11 @@ import { getUser } from "./Game/Api/useUser";
 import { IPlayer } from "../interfaces/IPlayer";
 import ListRooms from "./Game/Rooms/ListRooms";
 import { verifyPlayerInRoom } from "./Game/Api/useRooms";
+import plantLogo from "../imgs/layout/plants-logo-bingo.png";
+import plantsCircle from "../imgs/layout/plants-wheel.png";
+import play from "../imgs/icons/play.png";
+import infoProject from "../imgs/icons/info-project.png";
+import infoPlants from "../imgs/icons/info-plants.png";
 
 const playerPlaceHolder: IPlayer = {
   id: "",
@@ -17,7 +22,7 @@ const playerPlaceHolder: IPlayer = {
 export default function App() {
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
   const [user, setUser] = useState<IPlayer>(playerPlaceHolder);
-  const [screen, setScreen] = useState<number>(0);
+  const [screen, setScreen] = useState<number>(2);
 
   useEffect(() => {
     let userToken = Cookies.get("userToken");
@@ -48,11 +53,15 @@ export default function App() {
 
       if (room === "Jogador não encontrado") {
         console.log("Jogador não encontrado");
-      } else if (room === "Sala não encontrada" || room === undefined || room === null) {
+      } else if (
+        room === "Sala não encontrada" ||
+        room === undefined ||
+        room === null
+      ) {
         console.log("Sala não encontrada");
       } else if (room === "Sala não iniciada") {
         console.log("Sala não iniciada");
-      } else if (typeof room === 'string') {
+      } else if (typeof room === "string") {
         window.location.href = `/Room/${room}`;
       }
     };
@@ -66,13 +75,34 @@ export default function App() {
         {!screenLoaded && <div className="main-screen"></div>}
 
         {screen === 0 && screenLoaded && (
-          <div className="main-screen">
-            <p className="title">Bingo plantas medicinais</p>
+          <div className="main-screen column">
+            <div className="title-space">
+              <div className="title-box column">
+                <p className="title-logo">BINGO</p>
+                <div className="row">
+                  <p className="title-logo-2">PLANTAS</p>
+                  <p className="title-logo-3">MEDICINAIS</p>
+                </div>
+                <img src={plantLogo} className="plant-logo" />
+              </div>
+            </div>
 
-            <div className="options-box">
-              <div onClick={() => setScreen(1)}>Entrar em uma sala</div>
-              <div onClick={() => setScreen(2)}>Sobre</div>
-              <div onClick={() => setScreen(3)}>Info plantas medicinais</div>
+            <div className="buttons-space">
+              <div className="image-wrapper">
+                <img src={plantsCircle} className="circle-image" />
+              </div>
+              <div className="play-icon" onClick={() => setScreen(1)}>
+                <img src={play} />
+                <p>JOGAR</p>
+              </div>
+              <div className="info-project-icon" onClick={() => setScreen(2)}>
+                <img src={infoProject} />
+                <p>PROJETO</p>
+              </div>
+              <div className="info-plants-icon" onClick={() => setScreen(3)}>
+                <img src={infoPlants} />
+                <p>PLANTAS</p>
+              </div>
             </div>
           </div>
         )}

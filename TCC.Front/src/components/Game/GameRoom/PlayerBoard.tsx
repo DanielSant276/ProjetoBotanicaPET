@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./PlayerBoard.css";
 
-const images = require.context("../../../imgs", true);
+const images = require.context("../../../imgs/plants", true);
 const imageList = images.keys().map((image) => images(image));
 
 export function PlayerBoard({ name, boardNumbers, numbersAlreadyDrawn, markNumber, callBingo }: Props) {

@@ -19,7 +19,7 @@ import { HubConnection } from "@microsoft/signalr";
 import { IRanking } from "../../../interfaces/IRanking";
 import Cookies from "js-cookie";
 
-const images = require.context("../../../imgs", true);
+const images = require.context("../../../imgs/plants", true);
 const imageList = images.keys().map((image) => images(image));
 
 let timerNumber = 1;

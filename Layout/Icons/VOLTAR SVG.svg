@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="297mm" height="210mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 29700 21000"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil2 {fill:none}
+    .fil3 {fill:#CF4C4A}
+    .fil0 {fill:#E8D3C3}
+    .fil4 {fill:#CF4C4A;fill-rule:nonzero}
+    .fil1 {fill:#A98F71;fill-opacity:0.200000}
+   ]]>
+  </style>
+    <clipPath id="id0">
+     <rect x="13957.16" y="10327.69" width="1705.96" height="1701.11"/>
+    </clipPath>
+    <clipPath id="id1">
+     <path d="M14643.79 10174.67c443.6,0 803.2,359.61 803.2,803.2 0,443.59 -359.6,803.19 -803.2,803.19 -443.59,0 -803.19,-359.6 -803.19,-803.19 0,-443.59 359.6,-803.2 803.19,-803.2z"/>
+    </clipPath>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_1741622020656">
+   <g style="clip-path:url(#id0)">
+    <image x="13957.16" y="10327.69" width="1705.95" height="1701.11" xlink:href="VOLTAR SVG_Images\VOLTAR SVG_ImgID1.png"/>
+   </g>
+   <path class="fil0" d="M14643.79 10174.67c443.6,0 803.2,359.61 803.2,803.2 0,443.59 -359.6,803.19 -803.2,803.19 -443.59,0 -803.19,-359.6 -803.19,-803.19 0,-443.59 359.6,-803.2 803.19,-803.2z"/>
+   <g style="clip-path:url(#id1)">
+    <g>
+     <path id="_1" class="fil1" d="M14812.08 10408.44c388.67,0 703.74,315.07 703.74,703.73 0,388.67 -315.07,703.74 -703.74,703.74 -388.66,0 -703.73,-315.07 -703.73,-703.74 0,-388.66 315.07,-703.73 703.73,-703.73z"/>
+    </g>
+   </g>
+   <path class="fil2" d="M14643.79 10174.67c443.6,0 803.2,359.61 803.2,803.2 0,443.59 -359.6,803.19 -803.2,803.19 -443.59,0 -803.19,-359.6 -803.19,-803.19 0,-443.59 359.6,-803.2 803.19,-803.2z"/>
+   <path class="fil3" d="M14643.79 10174.67c443.6,0 803.2,359.61 803.2,803.2 0,443.59 -359.6,803.19 -803.2,803.19 -443.59,0 -803.19,-359.6 -803.19,-803.19 0,-443.59 359.6,-803.2 803.19,-803.2zm37.95 144.25c366.02,0 662.74,296.72 662.74,662.74 0,366.02 -296.72,662.74 -662.74,662.74 -366.02,0 -662.74,-296.72 -662.74,-662.74 0,-366.02 296.72,-662.74 662.74,-662.74z"/>
+   <path class="fil4" d="M14514.69 11060.71l0 215.75 -359.21 -359.22 359.21 -359.24 0 172.43c624.3,23.33 551.48,546.03 551.48,546.03 -130.99,-220.79 -437.89,-223.06 -551.48,-215.75z"/>
+  </g>
+ </g>
+</svg>

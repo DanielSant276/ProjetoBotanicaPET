@@ -1,4 +1,4 @@
-.about-options-box {
+/* .about-options-box {
   display: flex;
   flex-direction: column;
   border: 1px solid #ff00ff;
@@ -21,4 +21,101 @@
   padding: 5px;
   border: 1px solid #ff00ff;
   cursor: pointer;
+} */
+
+.about-image-space {
+  width: 50%;
+  overflow: hidden;
+}
+
+.about-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+  transform: scaleX(-1);
+}
+
+.about-text-space {
+  width: 50%;
+  margin-top: 40px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-title {
+  margin-bottom: 50px;
+}
+
+.about-title-box {
+  position: relative;
+}
+
+.about-title-logo, .about-title-logo-2, .about-title-logo-3 {
+  font-family: 'Zoika';
+  font-size: 100px;
+}
+
+.about-title-logo-2 {
+  font-family: 'Gotham-Light';
+  font-size: 27px;
+}
+
+.about-title-logo-3 {
+  font-family: 'Gotham-Book';
+  font-size: 27px;
+}
+
+.plant-logo {
+  height: 120px;
+  position: absolute;
+  right: -55px;
+}
+
+.about-info {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.about-info-text-space {
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-info-title {
+  font-size: 60px;
+  font-family: 'Gotham-Black';
+  margin-bottom: 50px;
+}
+
+.about-info-text {
+  font-family: 'Gotham-Medium';
+  text-align: justify;
+}
+
+.about-info-footer {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+
+.about-info-footer-text-space {
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.about-info-footer-text {
+  font-family: 'Gotham-Black';
+}
+
+.about-info-footer-text-course-name {
+  font-family: 'Gotham-Book';
+}
+
+.about-info-footer-back {
+  width: 70px;
+  height: 70px;
 }
