@@ -94,7 +94,7 @@ export default function GameRoomScreen() {
       gameGetRanking(connection, gameId);
 
       gameReceivedRanking(connection, (ranking: IRanking[]) => {
-        debugger;
+        // debugger;
         setRanking(ranking);
       });
 
