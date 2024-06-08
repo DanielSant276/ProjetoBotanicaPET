@@ -839,4 +839,6 @@ xupe,
 xupo,
 sexo,
 pum,
-xereca
+xereca,
+simasTurbo,
+sacudo

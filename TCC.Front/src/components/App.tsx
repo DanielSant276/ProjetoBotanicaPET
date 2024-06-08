@@ -8,7 +8,8 @@ import { IPlayer } from "../interfaces/IPlayer";
 import ListRooms from "./Game/Rooms/ListRooms";
 import { verifyPlayerInRoom } from "./Game/Api/useRooms";
 import plantLogo from "../imgs/layout/plants-logo-bingo.png";
-import plantsCircle from "../imgs/layout/plants-wheel.png";
+import plantsCircleIntern from "../imgs/layout/plants-wheel-intern.png";
+import plantsCircleExtern from "../imgs/layout/plants-wheel-extern.png";
 import play from "../imgs/icons/play.png";
 import infoProject from "../imgs/icons/info-project.png";
 import infoPlants from "../imgs/icons/info-plants.png";
@@ -20,54 +21,54 @@ const playerPlaceHolder: IPlayer = {
 };
 
 export default function App() {
-  const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
+  const [screenLoaded, setScreenLoaded] = useState<boolean>(true);
   const [user, setUser] = useState<IPlayer>(playerPlaceHolder);
-  const [screen, setScreen] = useState<number>(2);
+  const [screen, setScreen] = useState<number>(1);
 
-  useEffect(() => {
-    let userToken = Cookies.get("userToken");
+  // useEffect(() => {
+  //   let userToken = Cookies.get("userToken");
 
-    const fetchUser = async () => {
-      const user = await getUser(userToken);
+  //   const fetchUser = async () => {
+  //     const user = await getUser(userToken);
 
-      if (user) {
-        if (!userToken) {
-          Cookies.set("userToken", user.id, { expires: 30 });
-        }
+  //     if (user) {
+  //       if (!userToken) {
+  //         Cookies.set("userToken", user.id, { expires: 30 });
+  //       }
 
-        let newUser: IPlayer = {
-          id: user.id,
-          name: user.name === undefined ? "" : user.name,
-          ready: false,
-        };
+  //       let newUser: IPlayer = {
+  //         id: user.id,
+  //         name: user.name === undefined ? "" : user.name,
+  //         ready: false,
+  //       };
 
-        setUser(newUser);
-        setScreenLoaded(true);
+  //       setUser(newUser);
+  //       setScreenLoaded(true);
 
-        fetchPlayerInRoom(user.id);
-      }
-    };
+  //       fetchPlayerInRoom(user.id);
+  //     }
+  //   };
 
-    const fetchPlayerInRoom = async (userId: string) => {
-      const room = await verifyPlayerInRoom(userId);
+  //   const fetchPlayerInRoom = async (userId: string) => {
+  //     const room = await verifyPlayerInRoom(userId);
 
-      if (room === "Jogador não encontrado") {
-        console.log("Jogador não encontrado");
-      } else if (
-        room === "Sala não encontrada" ||
-        room === undefined ||
-        room === null
-      ) {
-        console.log("Sala não encontrada");
-      } else if (room === "Sala não iniciada") {
-        console.log("Sala não iniciada");
-      } else if (typeof room === "string") {
-        window.location.href = `/Room/${room}`;
-      }
-    };
+  //     if (room === "Jogador não encontrado") {
+  //       console.log("Jogador não encontrado");
+  //     } else if (
+  //       room === "Sala não encontrada" ||
+  //       room === undefined ||
+  //       room === null
+  //     ) {
+  //       console.log("Sala não encontrada");
+  //     } else if (room === "Sala não iniciada") {
+  //       console.log("Sala não iniciada");
+  //     } else if (typeof room === "string") {
+  //       window.location.href = `/Room/${room}`;
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
   return (
     <div>
@@ -89,7 +90,12 @@ export default function App() {
 
             <div className="buttons-space">
               <div className="image-wrapper">
-                <img src={plantsCircle} className="circle-image" />
+                <div className="circle-image-intern">
+                  <img src={plantsCircleIntern} />
+                </div>
+                <div className="circle-image-extern">
+                  <img src={plantsCircleExtern} />
+                </div>
               </div>
               <div className="play-icon" onClick={() => setScreen(1)}>
                 <img src={play} />

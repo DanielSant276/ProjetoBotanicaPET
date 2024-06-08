@@ -117,7 +117,7 @@ export const roomStartGame = (connection: HubConnection, callback: (roomId: stri
 export const roomErro = (connection: HubConnection) => {
   // debugger;
   connection.on("Error", (msg: string) => {
-    debugger;
+    // debugger;
     console.log(msg)
   });
 }

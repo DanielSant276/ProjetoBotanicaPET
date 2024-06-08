@@ -1,0 +1,151 @@
+.room-background-image {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url('../../../imgs/layout/texture-page.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.rooms-header {
+  z-index: 1;
+}
+
+.room-main-grid {
+  width: 70%;
+  height: 480px;
+  border: 5px solid var(--green-color);
+  z-index: 1;
+}
+
+.room-names {
+  width: 30%;
+  border-right: 5px solid var(--green-color);
+}
+
+.room-name {
+  padding: 16px 32px;
+  border-bottom: 5px solid var(--green-color);
+}
+
+.room-name-title {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Gotham-Bold';
+}
+
+.room-players {
+  padding: 32px 32px;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.room-player-not-ready, .room-player-ready {
+  width: 95%;
+  height: 55px;
+  background-color: var(--red-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.room-player-ready {
+  background-color: var(--green-color);
+}
+
+.room-player-box-intern {
+  position: relative;
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 3px 3px 5px;
+}
+
+.room-player-not-ready-name-text, .room-player-ready-name-text {
+  text-align: center;
+  color: var(--red-color);
+  font-size: 25px;
+  font-family: 'Gotham-Medium';
+}
+
+.room-player-ready-name-text {
+  color: var(--green-color);
+}
+
+.room-not-ready-light, .room-ready-light {
+  position: absolute;
+  background-color: red;
+  width: 7px;
+  height: 7px;
+  bottom: 5px;
+  right: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 0, 0, 0.8);
+  filter: blur(1px);
+}
+
+.room-ready-light {
+  background-color: green;
+  box-shadow: 0 0 10px 2px rgba(0, 255, 0, 0.8);
+  filter: blur(1px);
+}
+
+.room-log-box {
+  position: relative;
+  width: 70%;
+  background-color: var(--main-color);
+}
+
+.room-log-box-background {
+  position: absolute;
+  z-index: 0;
+  background-color: var(--main-color);
+  box-shadow: 0 0 20px 2px var(--main-color);
+  filter: brightness(0.85) blur(2.5px);
+  margin-left: 16px;
+  margin-top: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+}
+
+.room-log-text-box {
+  margin: 32px;
+  z-index: 1;
+  width: calc(100% - 70px);
+  overflow-y: auto;
+}
+
+/* Estilos para a barra de rolagem dentro do .room-log-text-box */
+.room-log-text-box::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Estilo para a parte que pode ser arrastada */
+.room-log-text-box::-webkit-scrollbar-thumb {
+  background: var(--green-color);
+  border-radius: 3px;
+}
+
+/* Estilo para o polegar quando o mouse está sobre ele */
+.room-log-text-box::-webkit-scrollbar-thumb:hover {
+  background: var(--green-color-dark);
+}
+
+/* Estilo para o trilho da barra de rolagem */
+.room-log-text-box::-webkit-scrollbar-track {
+  background: var(--main-color);
+}
+
+.room-log-text {
+  margin-bottom: 16px;
+}
+
+.rooms-footer {
+  z-index: 1;
+}

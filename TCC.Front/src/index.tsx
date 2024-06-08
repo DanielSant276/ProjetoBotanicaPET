@@ -3,10 +3,22 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import GameRoomScreen from './components/Game/GameRoom/GameRoomScreen';
+import Room from './components/Game/Rooms/Room';
+import { IPlayer } from './interfaces/IPlayer';
+import { IRoom } from './interfaces/IRoom';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const user: IPlayer = {id: '', name: 'Daniel', ready: false};
+const setUser = (value: IPlayer) => {
+
+};
+const roomInfo: IRoom = {id: '23abebeb-6bd0-4f3f-a326-ace7fd5dab19', name: 'a', started: false, numberOfPlayers: 3};
+const resetRoom = () => {
+
+};
 
 const router = createBrowserRouter([
   {
@@ -19,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/RoomTest',
-    element: <GameRoomScreen />
+    element: <Room roomInfo={roomInfo}  setUser={setUser} user={user} resetRoom={resetRoom} />
   }
 ]);
 

@@ -13,6 +13,7 @@ section, div, a {
   --main-color: #F9EFE5;
   --dark-main-color: #DCC6B3;
   --green-color: #52614B;
+  --green-color-dark: #424e3d;
   --red-color: #CF4C4A;
 }
 
@@ -147,4 +148,22 @@ p {
 @font-face {
   font-family: 'Zoika';
   src: url('fonts/Zoika.ttf') format('truetype');
+}
+
+.old-main-screen {
+  display: flex;
+  flex-direction: column;
+  background-color: #282c34;
+  min-height: 100vh;
+  min-width: 100vw;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  p {
+    /* font-family: Antic Didone; */
+    font-style: normal;
+    font-weight: normal;
+    color: #ffffff;
+  }
 }

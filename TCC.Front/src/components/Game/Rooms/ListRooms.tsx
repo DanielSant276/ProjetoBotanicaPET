@@ -6,6 +6,9 @@ import { IPlayer } from "../../../interfaces/IPlayer";
 import { updateUser } from "../Api/useUser";
 import Room from "./Room";
 import { Modal } from "@mui/material";
+import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
+import backButton from "../../../imgs/icons/back.png";
+import attButton from "../../../imgs/icons/att.png";
 
 export default function ListRooms({ setScreen, user, setUser }: Props) {
   const [rooms, setRooms] = useState<IRoom[] | undefined>();
@@ -47,10 +50,9 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
   };
 
   const createNewRoomOpener = (open: boolean) => {
-    if (user.name === '') {
-      alert('nome do jogador não selecionado');
-    }
-    else {
+    if (user.name === "") {
+      alert("nome do jogador não selecionado");
+    } else {
       setOpenCreateRoom(open);
     }
   };
@@ -154,7 +156,12 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     fetch("/notValidWords.txt")
       .then((response) => response.text())
       .then((texto) => {
-        setInvalidWord(texto.split(",\n"));
+        const lines = texto.split("\n");
+
+        const stringsProcessadas = lines
+          .map((linha) => linha.trim().replace(/,$/, ""))
+          .filter((linha) => linha);
+        setInvalidWord(stringsProcessadas);
       })
       .catch((error) => console.error("Erro ao carregar o arquivo:", error));
   }, []);
@@ -162,16 +169,57 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
   return (
     <Fragment>
       {roomChosed === null ? (
-        <div className="main-screen">
-          <p className="rooms-title">Salas</p>
+        <div className="main-screen column">
+          <div className="rooms-header">
+            <p className="rooms-header-title">BINGO</p>
+            <img className="rooms-header-img" src={plantLogo} />
+          </div>
 
-          <div className="rooms-box" key="teste">
-            <div className="rooms-chose-room">
-              {rooms?.length === 0 && (
+          <div className="rooms-content">
+            <div className="rooms-grid">
+              <div className="rooms-grid-box column">
+                <p className="rooms-grid-box-text">SALA DO NAME</p>
+                <p className="rooms-grid-box-rooms-players">3/4</p>
+              </div>
+              {Array.from({ length: 14 }, (_, index) =>
+                index === 7 ? (
+                  <div className="rooms-green-grid-box column">
+                    <p className="rooms-green-grid-text-1">ESPAÇO</p>
+                    <p className="rooms-green-grid-text-2">LIVRE</p>
+                  </div>
+                ) : (
+                  <div className="rooms-grid-box-number">
+                    <p className="rooms-grid-box-text-number">36</p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+          <div className="rooms-footer">
+            <div className="rooms-footer-content">
+              <div className="rooms-footer-content-icons">
+                <img className="rooms-back-button" src={backButton} onClick={() => setScreen(0)} />
+                <img className="rooms-att-button" src={attButton} onClick={() => setReloadRooms(!reloadRooms)} />
+              </div>
+              <input 
+                className="rooms-footer-name-input" 
+                type="text"
+                placeholder="Escolha um nome de jogador (máximo de 10 letras)"
+                value={user.name}
+                onChange={(event) => handleChangeUser(event.target.value)} 
+              />
+              <div className="rooms-footer-new-room" onClick={() => createNewRoomOpener(true)}>
+                <div className="rooms-footer-new-room-intern">
+                  <p className="rooms-footer-new-room-text">NOVA SALA</p>
+                </div>
+              </div>
+            </div>
+          </div>
+            {/* <div className="rooms-chose-room">
+              {(rooms?.length === 0 ||
+                rooms?.filter((room) => !room.started).length === 0) && (
                 <div className="no-room">
-                  <p>
-                    Nenhuma sala foi criada
-                  </p>
+                  <p>Nenhuma sala foi criada</p>
                 </div>
               )}
               {rooms?.map((room) => {
@@ -228,8 +276,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
                   <p>Nova Sala</p>
                 </div>
               </div>
-            </div>
-          </div>
+            </div> */}
 
           <Modal
             open={openCreateRoom}

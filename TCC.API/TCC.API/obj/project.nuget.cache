@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/IsRi60IKY5DKc1qVwRGHiJ+a2xy6PkDo4Rigd7FwVQP2utUF2LYX5UWmBYE0bHBGWZ6/FI3G10vduMETVZfbA==",
+  "dgSpecHash": "/ba8hjXBwUXH0qDgEsfw+fkhj9iTo3SZo8MMlGK4bXyjTgI/bxCfxFDbRI2PmcjLMvrPIXXKFJscyTwwq6f2rw==",
   "success": true,
-  "projectFilePath": "G:\\Daniel SSD\\PDFs\\SI\\TCCII\\TCC.API\\TCC.API\\TCC.API.csproj",
+  "projectFilePath": "G:\\Daniel SSD\\PDFs\\SI\\TCCII-novo\\ProjetoBotanicaPET\\TCC.API\\TCC.API\\TCC.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danie\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\danie\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

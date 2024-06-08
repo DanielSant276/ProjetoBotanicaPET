@@ -94,7 +94,7 @@ export default function GameRoomScreen() {
       gameGetRanking(connection, gameId);
 
       gameReceivedRanking(connection, (ranking: IRanking[]) => {
-        debugger;
+        // debugger;
         setRanking(ranking);
       });
 
@@ -140,7 +140,7 @@ export default function GameRoomScreen() {
   }, [winningPlayer]);
 
   return (
-    <div className="main-screen">
+    <div className="old-main-screen">
       <div className="sorter-grid-extern column">
         {nextNumberTimer !== -1 ?
           (<p className="sorter-timer-text">
