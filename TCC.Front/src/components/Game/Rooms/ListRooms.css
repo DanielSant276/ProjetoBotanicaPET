@@ -1,5 +1,5 @@
 .rooms-header {
-  margin-top: 10px;
+  margin-top: 32px;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -101,7 +101,11 @@
   align-items: center;
 }
 
-.rooms-back-button, .rooms-att-button {
+.rooms-home-button {
+  margin-left: 25px;
+}
+
+.rooms-back-button, .rooms-att-button, .rooms-home-button {
   width: 70px;
   height: 70px;
   cursor: pointer;
@@ -155,4 +159,91 @@
   color: var(--red-color);
   font-size: 20px;
   font-family: 'Gotham-Medium';
+}
+
+.rooms-modal-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.rooms-modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  border: 5px solid var(--green-color);
+  background-image: url('../../../imgs/layout/texture-card.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 25px;
+}
+
+.rooms-modal-header {
+  background-color: var(--green-color);
+  border: 5px solid var(--green-color);
+  margin-top: -1px;
+  border-radius: 15px 15px 0px 0px;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.rooms-modal-header-circle {
+  width: 10px;
+  height: 10px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+}
+
+.rooms-modal-header-title {
+  color: var(--main-color);
+  font-size: 25px;
+  font-family: 'Gotham-Medium';
+  margin: 0px 20px;
+  text-align: center;
+}
+
+.rooms-modal-content {
+  padding: 16px;
+}
+
+.rooms-modal-title {
+  text-align: center;
+  color: var(--green-color);
+  font-size: 18px;
+  font-family: 'Gotham-Bold';
+  margin-bottom: 8px;
+}
+
+.rooms-modal-create-room {
+  justify-content: space-between;
+}
+
+.rooms-modal-alert-text-no-name, .rooms-modal-alert-text-invalid-name {
+  font-size: 16px;
+  font-family: 'Gotham-Medium';
+  text-align: center;
+  color: var(--red-color);
+}
+
+.rooms-modal-input {
+  align-self: center;
+  width: 85%;
+  height: 40px;
+  border: 1px solid var(--main-color);
+  border-radius: 8px;
+  background-color: #E0D5C7;
+  padding-left: 20px;
+  color: var(--green-color);
+  font-family: 'Gotham-Medium';
+  font-size: 17px;
+  box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--main-color);
+  margin-bottom: 32px;
+}
+
+.rooms-modal-back-button {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
 }

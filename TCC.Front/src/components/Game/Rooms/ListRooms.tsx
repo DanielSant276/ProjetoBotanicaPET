@@ -8,10 +8,13 @@ import Room from "./Room";
 import { Modal } from "@mui/material";
 import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
 import backButton from "../../../imgs/icons/back.png";
+import playButton from "../../../imgs/icons/play.png";
 import attButton from "../../../imgs/icons/att.png";
+import { vigenereEncrypt } from "../EncryptFunction/vigenere";
 
 export default function ListRooms({ setScreen, user, setUser }: Props) {
   const [rooms, setRooms] = useState<IRoom[] | undefined>();
+  const [roomsNotStarted, setRoomsNotStarted] = useState<number>(0);
   const [roomChosed, setRoomChosed] = useState<IRoom | null>(null);
   const [reloadRooms, setReloadRooms] = useState<boolean>(false);
 
@@ -21,6 +24,8 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
   const [emptyName, setEmptyName] = useState<boolean>(false);
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [invalidWord, setInvalidWord] = useState<string[]>([]);
+
+  const [roomsNumbers, setRoomsNumbers] = useState<number[]>([]);
 
   const verifyRoom = (room: IRoom) => {
     if (user.name !== "" && !user.name.startsWith(" ")) {
@@ -47,6 +52,9 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
 
   const resetRoom = () => {
     setRoomChosed(null);
+    setTimeout(() => {
+      setReloadRooms(!reloadRooms);
+    }, 500);
   };
 
   const createNewRoomOpener = (open: boolean) => {
@@ -58,18 +66,24 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
   };
 
   const createNewRoom = async () => {
+    setInvalidName(false);
+    setEmptyName(false);
+
     if (newRoomName === "") {
       setEmptyName(true);
       return;
+    } else {
+      setInvalidName(false);
+      setEmptyName(false);
     }
 
     if (verifyInvalidName(newRoomName)) {
       setInvalidName(true);
       return;
+    } else {
+      setInvalidName(false);
     }
 
-    setEmptyName(false);
-    setInvalidName(false);
     setOpenCreateRoom(false);
 
     let newRoom = await createRoom(newRoomName, user);
@@ -92,15 +106,22 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     }
 
     if (invalidWord.length > 0) {
-      if (
-        invalidWord.includes(name) ||
-        invalidWord.includes(name.toLowerCase())
-      ) {
+      if (invalidWord.includes(vigenereEncrypt(name.toLowerCase()))) {
         return true;
       }
     }
     return false;
   };
+
+  useEffect(() => {
+    let numbers = [];
+
+    for (let i = 0; i < 15; i++) {
+      numbers.push(Math.floor(Math.random() * 100) + 1);
+    }
+
+    setRoomsNumbers(numbers);
+  }, []);
 
   // verifica as salas que existe e recarrega sempre que alguém apertar em um botão de load
   useEffect(() => {
@@ -109,6 +130,12 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
         const roomsData = await getRooms();
         if (roomsData !== undefined) {
           setRooms(roomsData);
+
+          const countNotStartedRooms = roomsData.filter(
+            (room) => !room.started
+          ).length;
+
+          setRoomsNotStarted(countNotStartedRooms);
         }
       } catch (error) {
         console.error("Erro loading rooms:", error);
@@ -116,8 +143,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     };
 
     fetchRooms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadRooms]);
+  }, [reloadRooms]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -129,7 +155,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
 
     // Limpa o intervalo quando o componente é desmontado ou atualizado
     return () => clearInterval(intervalId);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // debouncer
   useEffect(() => {
@@ -149,11 +175,11 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     }, 500);
 
     return () => clearTimeout(debounceFunction);
-  }, [user]);
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // pega as palavras do arquivo
   useEffect(() => {
-    fetch("/notValidWords.txt")
+    fetch("/notValidWordsEncrypt.txt")
       .then((response) => response.text())
       .then((texto) => {
         const lines = texto.split("\n");
@@ -164,7 +190,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
         setInvalidWord(stringsProcessadas);
       })
       .catch((error) => console.error("Erro ao carregar o arquivo:", error));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Fragment>
@@ -172,24 +198,70 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
         <div className="main-screen column">
           <div className="rooms-header">
             <p className="rooms-header-title">BINGO</p>
-            <img className="rooms-header-img" src={plantLogo} />
+            <img
+              className="rooms-header-img"
+              src={plantLogo}
+              alt="Logo do projeto"
+            />
           </div>
 
           <div className="rooms-content">
             <div className="rooms-grid">
-              <div className="rooms-grid-box column">
-                <p className="rooms-grid-box-text">SALA DO NAME</p>
-                <p className="rooms-grid-box-rooms-players">3/4</p>
-              </div>
-              {Array.from({ length: 14 }, (_, index) =>
-                index === 7 ? (
-                  <div className="rooms-green-grid-box column">
+              {rooms?.map((room, index) => {
+                if (!room.started) {
+                  return (
+                    <Fragment key={room.id}>
+                      <div
+                        className="rooms-grid-box column"
+                        key={room.id}
+                        onClick={() => verifyRoom(room)}
+                      >
+                        <p
+                          className={`${
+                            room.numberOfPlayers === 4
+                              ? "rooms-grid-box-text red-color"
+                              : "rooms-grid-box-text"
+                          }`}
+                        >
+                          SALA {room.name.toUpperCase()}
+                        </p>
+                        <p
+                          className={`${
+                            room.numberOfPlayers === 4
+                              ? "rooms-grid-box-rooms-players red-color"
+                              : "rooms-grid-box-rooms-players"
+                          }`}
+                        >
+                          {room.numberOfPlayers}/4
+                        </p>
+                      </div>
+
+                      {index === 7 && (
+                        <div
+                          className="rooms-green-grid-box column"
+                          key="free-room"
+                        >
+                          <p className="rooms-green-grid-text-1">ESPAÇO</p>
+                          <p className="rooms-green-grid-text-2">LIVRE</p>
+                        </div>
+                      )}
+                    </Fragment>
+                  );
+                }
+                return null;
+              })}
+
+              {Array.from({ length: 15 - roomsNotStarted }, (_, index) =>
+                roomsNotStarted + index === 7 ? (
+                  <div className="rooms-green-grid-box column" key="free-room">
                     <p className="rooms-green-grid-text-1">ESPAÇO</p>
                     <p className="rooms-green-grid-text-2">LIVRE</p>
                   </div>
                 ) : (
-                  <div className="rooms-grid-box-number">
-                    <p className="rooms-grid-box-text-number">36</p>
+                  <div className="rooms-grid-box-number" key={`room-${index}`}>
+                    <p className="rooms-grid-box-text-number">
+                      {roomsNumbers[roomsNotStarted + index]}
+                    </p>
                   </div>
                 )
               )}
@@ -198,131 +270,95 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
           <div className="rooms-footer">
             <div className="rooms-footer-content">
               <div className="rooms-footer-content-icons">
-                <img className="rooms-back-button" src={backButton} onClick={() => setScreen(0)} />
-                <img className="rooms-att-button" src={attButton} onClick={() => setReloadRooms(!reloadRooms)} />
+                <img
+                  className="rooms-back-button"
+                  src={backButton}
+                  onClick={() => setScreen(0)}
+                  alt="Botão de voltar"
+                />
+                <img
+                  className="rooms-att-button"
+                  src={attButton}
+                  onClick={() => setReloadRooms(!reloadRooms)}
+                  alt="Botão de atualizar as salas"
+                />
               </div>
-              <input 
-                className="rooms-footer-name-input" 
+              <input
+                className="rooms-footer-name-input"
                 type="text"
                 placeholder="Escolha um nome de jogador (máximo de 10 letras)"
                 value={user.name}
-                onChange={(event) => handleChangeUser(event.target.value)} 
+                onChange={(event) => handleChangeUser(event.target.value)}
               />
-              <div className="rooms-footer-new-room" onClick={() => createNewRoomOpener(true)}>
+              <div
+                className="rooms-footer-new-room"
+                onClick={() => createNewRoomOpener(true)}
+              >
                 <div className="rooms-footer-new-room-intern">
                   <p className="rooms-footer-new-room-text">NOVA SALA</p>
                 </div>
               </div>
             </div>
           </div>
-            {/* <div className="rooms-chose-room">
-              {(rooms?.length === 0 ||
-                rooms?.filter((room) => !room.started).length === 0) && (
-                <div className="no-room">
-                  <p>Nenhuma sala foi criada</p>
-                </div>
-              )}
-              {rooms?.map((room) => {
-                if (!room.started) {
-                  return (
-                    <div
-                      className="rooms-info"
-                      key={room.id}
-                      onClick={() => verifyRoom(room)}
-                    >
-                      <p
-                        className={`${
-                          room.numberOfPlayers === 4 ? "red-color" : ""
-                        }`}
-                      >
-                        Sala {room.name}
-                      </p>
-                      <p
-                        className={`${
-                          room.numberOfPlayers === 4 ? "red-color" : ""
-                        }`}
-                      >
-                        {room.numberOfPlayers}/4
-                      </p>
-                    </div>
-                  );
-                }
-                return <div key={0}></div>;
-              })}
-            </div>
-            <div className="rooms-new-room-buttons">
-              <div className="rooms-new-room" onClick={() => setScreen(0)}>
-                <p>Voltar</p>
-              </div>
-              <div
-                className="rooms-new-room"
-                onClick={() => setReloadRooms(!reloadRooms)}
-              >
-                <p>Recarregar salas</p>
-              </div>
-              <div className="align">
-                <p>Nome do Jogador:</p>
-                <input
-                  className="rooms-name-input"
-                  type="text"
-                  placeholder="Escolha um nome"
-                  value={user.name}
-                  onChange={(event) => handleChangeUser(event.target.value)}
-                />
-                <div
-                  className="rooms-back-button"
-                  onClick={() => createNewRoomOpener(true)}
-                >
-                  <p>Nova Sala</p>
-                </div>
-              </div>
-            </div> */}
 
           <Modal
             open={openCreateRoom}
             onClose={() => createNewRoomOpener(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
           >
-            <div className="rooms-modal-box">
-              <p className="rooms-modal-title">Nome da sala</p>
-
-              <div className="column">
-                <p
-                  className="rooms-modal-alert-text-no-name"
-                  style={{ display: emptyName ? "flex" : "none" }}
-                >
-                  Insira um nome para a nova sala
-                </p>
-                <p
-                  className="rooms-modal-alert-text-invalid-name"
-                  style={{ display: invalidName ? "flex" : "none" }}
-                >
-                  Nome inválido
-                </p>
-                <input
-                  type="text"
-                  className="rooms-modal-input"
-                  value={newRoomName}
-                  onChange={(event) =>
-                    handleChangeNewRoomName(event.target.value)
-                  }
-                />
-              </div>
-
-              <div className="rooms-modal-create-room">
-                <div
-                  className="rooms-back-button"
-                  onClick={() => createNewRoomOpener(false)}
-                >
-                  <p>Voltar</p>
+            <div className="rooms-modal-screen">
+              <div className="rooms-modal-box column">
+                <div className="rooms-modal-header">
+                  <div className="rooms-modal-header-circle" />
+                  <p className="rooms-modal-header-title">CRIAR NOVA SALA</p>
+                  <div className="rooms-modal-header-circle" />
                 </div>
+                <div className="rooms-modal-content column">
+                  <p className="rooms-modal-title">NOME DA SALA</p>
 
-                <div
-                  className="rooms-back-button"
-                  onClick={() => createNewRoom()}
-                >
-                  <p>Criar sala</p>
+                  <div className="column">
+                    <p
+                      className="rooms-modal-alert-text-no-name"
+                      style={{
+                        display: emptyName ? "flex" : "none",
+                        alignSelf: "center",
+                      }}
+                    >
+                      Insira um nome para a nova sala
+                    </p>
+                    <p
+                      className="rooms-modal-alert-text-invalid-name"
+                      style={{
+                        display: invalidName ? "flex" : "none",
+                        alignSelf: "center",
+                      }}
+                    >
+                      Nome inválido
+                    </p>
+                    <input
+                      type="text"
+                      className="rooms-modal-input"
+                      value={newRoomName}
+                      onChange={(event) =>
+                        handleChangeNewRoomName(event.target.value)
+                      }
+                    />
+                  </div>
+
+                  <div className="rooms-modal-create-room">
+                    <img
+                      src={backButton}
+                      className="rooms-modal-back-button"
+                      onClick={() => createNewRoomOpener(false)}
+                      alt="Botão de retornar"
+                    />
+
+                    <img
+                      src={playButton}
+                      className="rooms-modal-back-button"
+                      onClick={() => createNewRoom()}
+                      alt="Botão de aceitar"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

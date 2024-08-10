@@ -1,4 +1,4 @@
-.sorter-grid-extern {
+/* .sorter-grid-extern {
   height: 340px;
   width: 400px;
   padding: 15px 20px 15px 20px;
@@ -18,7 +18,7 @@
   width: 100%;
   height: calc(100% - 20px);
   justify-content: center;
-  /* align-items: center; */
+  /* align-items: center; *//*
 }
 
 .sorter-ranking-space {
@@ -49,13 +49,13 @@
   height: fit-content;
   padding: 3px 10px;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0); /* cor com transparência */
+  background-color: rgba(0, 0, 0); /* cor com transparência *//*
 }
 
 .sorter-image-box {
   position: relative;
   /* width: 80%; */
-  /* height: 00%; */
+  /* height: 00%; *//*
   border: 1px solid #ff00ff;
   left: 0px;
 }
@@ -83,8 +83,300 @@
   background-repeat: no-repeat;
   overflow: hidden;
   object-fit: cover;
-}
+} */
 /* 
 p {
   color: #ffffff;
 } */
+
+/* .image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.circle-image-intern, .circle-image-extern {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+  height: 195%;
+} */
+
+
+.game-room-background-image-space {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.game-room-background-image {
+  position: absolute;
+  bottom: 0;
+  transform: translate(42%, 50%) rotate(31deg);
+  height: 150%;
+  z-index: 0;
+}
+
+.game-room-header {
+  margin-top: 32px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.game-room-header-title {
+  font-size: 120px;
+  font-family: 'Zoika';
+}
+
+.game-room-header-img {
+  height: 100px;
+  margin-left: 5px;
+}
+
+.game-room-content {
+  align-items: center;
+  justify-content: center;
+}
+
+.game-room-main-grid {
+  width: 70%;
+  height: 480px;
+  border: 5px solid var(--green-color);
+  z-index: 1;
+}
+
+.game-room-names {
+  width: 30%;
+  border-right: 5px solid var(--green-color);
+  background-image: url("../../../imgs/layout/texture-card.png");
+  background-size: cover;
+}
+
+.game-room-name {
+  padding: 16px 32px;
+  border-bottom: 5px solid var(--green-color);
+  justify-content: center;
+}
+
+.game-room-name-title {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Gotham-Bold';
+}
+
+.game-room-players {
+  padding: 32px 32px;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-room-player {
+  width: 95%;
+  height: 55px;
+  background-color: var(--green-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-room-player-box-intern {
+  position: relative;
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 5px 3px 3px 5px;
+}
+
+.game-room-player-name-text {
+  text-align: center;
+  color: var(--green-color);
+  font-size: 20px;
+  font-family: 'Gotham-Medium';
+}
+
+.game-room-game-box {
+  position: relative;
+  width: 70%;
+}
+
+.game-room-game-box-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: var(--main-color);
+  filter: brightness(0.85);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.game-room-footer {
+  z-index: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-room-footer-content {
+  width: 70%;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-room-back-button, .game-room-att-button {
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+
+.game-room-att-button {
+  margin-left: 25px;
+}
+
+.game-room-footer-new-room {
+  width: 160px;
+  height: 50px;
+  background-color: var(--red-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.game-room-footer-new-room-intern {
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 3px 3px 5px;
+}
+
+.game-room-footer-new-room-text {
+  text-align: center;
+  color: var(--red-color);
+  font-size: 20px;
+  font-family: 'Gotham-Bold';
+}
+
+.game-room-modal-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-room-modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: fit-content;
+  border: 5px solid var(--green-color);
+  background-image: url('../../../imgs/layout/texture-card.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 25px;
+}
+
+.game-room-modal-content {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.game-room-modal-title {
+  text-align: center;
+  color: var(--green-color);
+  font-size: 18px;
+  font-family: 'Gotham-Bold';
+  margin-bottom: 8px;
+}
+
+.game-room-modal-header {
+  background-color: var(--green-color);
+  border: 5px solid var(--green-color);
+  margin-top: -1px;
+  border-radius: 15px 15px 0px 0px;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.game-room-modal-header-circle {
+  width: 10px;
+  height: 10px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+}
+
+.game-room-modal-header-title {
+  color: var(--main-color);
+  font-size: 25px;
+  font-family: 'Gotham-Medium';
+  margin: 0px 20px;
+  text-align: center;
+}
+
+.game-room-modal-logo {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.game-room-modal-logo-title {
+  font-size: 70px;
+  font-family: 'Zoika';
+}
+
+.game-room-modal-logo-img {
+  height: 60px;
+  margin-left: 5px;
+}
+
+.game-room-modal-text-content {
+  width: calc(100% - 80px);
+  height: auto;
+  margin: 16px 32px;
+  border: 1px dashed #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-room-modal-text-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--main-color);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+}
+
+.game-room-modal-text {
+  font-size: 19px;
+  font-family: 'Gotham-Medium';
+  text-align: justify;
+  position: relative;
+}
+
+.game-room-modal-create-room {
+  justify-content: space-between;
+}
+
+.game-room-modal-back-button {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}

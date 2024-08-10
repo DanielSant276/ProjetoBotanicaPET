@@ -20,7 +20,9 @@ import {
   roomStartGame,
 } from "../Api/hubRooms";
 import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
-import backImage from "../../../imgs/icons/back.png";
+import backImage from "../../../imgs/layout/plants-wheel-intern.png";
+import backButton from "../../../imgs/icons/back.png";
+import homeButton from "../../../imgs/icons/home.png";
 
 export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
   const [players, setPlayers] = useState<IPlayer[]>([]);
@@ -150,7 +152,9 @@ export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
   return (
     <Fragment>
       <div className="main-screen column">
-        <div className="room-background-image" />
+        <div className="room-background-image-space">
+          <img src={backImage} className="room-background-image" />
+        </div>
 
         <div className="rooms-header">
           <p className="rooms-header-title">BINGO</p>
@@ -161,62 +165,49 @@ export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
           <div className="room-main-grid">
             <div className="room-names column">
               <div className="room-name">
-                <p className="room-name-title">SALA DO MATUÊ</p>
+                <p className="room-name-title">
+                  SALA {roomInfo.name.toUpperCase()}
+                </p>
               </div>
 
               <div className="room-players column">
-                <div className="room-player-ready">
-                  <div className="room-player-box-intern">
-                    <p className="room-player-ready-name-text">Matuê</p>
-                    <div className="room-ready-light" />
+                {players?.map((player) => (
+                  <div
+                    className={
+                      player.ready
+                        ? "room-player-ready"
+                        : "room-player-not-ready"
+                    }
+                  >
+                    <div className="room-player-box-intern">
+                      <p
+                        className={
+                          player.ready
+                            ? "room-player-ready-name-text"
+                            : "room-player-not-ready-name-text"
+                        }
+                      >
+                        {player.name}
+                      </p>
+                      <div
+                        className={
+                          player.ready
+                            ? "room-ready-light"
+                            : "room-not-ready-light"
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="room-player-ready">
-                  <div className="room-player-box-intern">
-                    <p className="room-player-ready-name-text">Tuninho</p>
-                    <div className="room-ready-light" />
-                  </div>
-                </div>
-                <div className="room-player-not-ready">
-                  <div className="room-player-box-intern">
-                    <p className="room-player-not-ready-name-text">
-                      SimasTurbo
-                    </p>
-                    <div className="room-not-ready-light" />
-                  </div>
-                </div>
-                <div className="room-player-not-ready">
-                  <div className="room-player-box-intern">
-                    <p className="room-player-not-ready-name-text">
-                      SiriSacudo
-                    </p>
-                    <div className="room-not-ready-light" />
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
             <div className="room-log-box column">
-              <div className='room-log-box-background'></div>
+              <div className="room-log-box-background"></div>
               <div className="room-log-text-box column">
-                <p className="room-log-text">Boas vindas à sala do Matuê, SimasTurbo...</p>
-                <p className="room-log-text">Tuninho está pronto!</p>
-                <p className="room-log-text">Boas vindas à sala do Matuê, SiriSacudo...</p>
-                <p className="room-log-text">O jogo irá começar em 5.</p>
-                <p className="room-log-text">4.</p>
-                <p className="room-log-text">3.</p>
-                <p className="room-log-text">2.</p>
-                <p className="room-log-text">1.</p>
-                <p className="room-log-text">Bom jogo!</p>
-                <p className="room-log-text">4.</p>
-                <p className="room-log-text">3.</p>
-                <p className="room-log-text">2.</p>
-                <p className="room-log-text">1.</p>
-                <p className="room-log-text">Bom jogo!</p>
-                <p className="room-log-text">3.</p>
-                <p className="room-log-text">2.</p>
-                <p className="room-log-text">1.</p>
-                <p className="room-log-text">Bom jogo!</p>
+                {chat.map((message) => (
+                  <p className="room-log-text">{message}</p>
+                ))}
               </div>
             </div>
           </div>
@@ -224,10 +215,23 @@ export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
 
         <div className="rooms-footer">
           <div className="rooms-footer-content">
-            <img className="rooms-back-button" src={backImage} />
+            <div>
+              <img
+                className="rooms-back-button"
+                src={backButton}
+                onClick={() => {
+                  if (connection) {
+                    roomSendActionToHub(connection, roomInfo.id, user, setUser);
+                    resetRoom();
+                  }
+                }}
+                alt="Botão de voltar"
+              />
+              {/* <img className="rooms-home-button" src={homeButton} /> */}
+            </div>
             <div
               className="rooms-footer-new-room"
-              onClick={() => console.log(true)}
+              onClick={() => handleChangeMyPlayer(!user.ready)}
             >
               <div className="rooms-footer-new-room-intern">
                 <p className="rooms-footer-new-room-text">PRONTO</p>
@@ -236,52 +240,6 @@ export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
           </div>
         </div>
       </div>
-      {/* <div className='old-main-screen'>
-        <p className='rooms-title'>Sala {roomInfo.name}</p>
-
-        <div className='rooms-box'>
-          <div className='rooms-selected-room'>
-            <div className='rooms-players-name'>
-              {players?.map((player) => (
-                <div className='rooms-player-name'>
-                  <div className='rooms-player-name'>
-                    <p>{player.name}</p>
-                  </div>
-                  <div>{player.ready && <CheckIcon />}</div>
-                </div>
-              ))}
-            </div>
-            {
-              <div className='rooms-log-message'>
-                {chat.map((message) => (
-                  <p>{message}</p>
-                ))}
-              </div>
-            }
-          </div>
-          <div className='rooms-new-room-buttons'>
-            <div
-              className='rooms-back-button'
-              onClick={() => {
-                if (connection) {
-                  roomSendActionToHub(connection, roomInfo.id, user, setUser);
-                  resetRoom();
-                }
-              }}
-            >
-              <p>Voltar</p>
-            </div>
-            <div>
-              <div
-                className='rooms-start-button'
-                onClick={() => handleChangeMyPlayer(!user.ready)}
-              >
-                <p>Pronto</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </Fragment>
   );
 }

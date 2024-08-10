@@ -7,7 +7,11 @@ export default function About({ setScreen }: Props) {
   return (
     <div className="main-screen">
       <div className="about-image-space">
-        <img src={aboutImage} className="about-image" />
+        <img
+          src={aboutImage}
+          className="about-image"
+          alt="Imagem a esquerda representativa do projeto"
+        />
       </div>
       <div className="about-text-space">
         <div className="about-title">
@@ -17,7 +21,7 @@ export default function About({ setScreen }: Props) {
               <p className="about-title-logo-2">PLANTAS</p>
               <p className="about-title-logo-3">MEDICINAIS</p>
             </div>
-            <img src={plantLogo} className="plant-logo" />
+            <img src={plantLogo} className="plant-logo" alt="Logo do projeto" />
           </div>
         </div>
         <div className="about-info">
@@ -42,17 +46,19 @@ export default function About({ setScreen }: Props) {
           <div className="about-info-footer">
             <div className="about-info-footer-text-space">
               <p className="about-info-footer-text">CURSO</p>
-              <p className="about-info-footer-text-course-name">&nbsp;SISTEMAS DA INFORMAÇÃO</p>
+              <p className="about-info-footer-text-course-name">
+                &nbsp;SISTEMAS DA INFORMAÇÃO
+              </p>
             </div>
-            <img src={backImage} className="about-info-footer-back" onClick={() => setScreen(0)}/>
+            <img
+              src={backImage}
+              className="about-info-footer-back"
+              onClick={() => setScreen(0)}
+              alt="Botão de retornar a tela principal"
+            />
           </div>
         </div>
       </div>
-      {/* <p className='title'>Sobre</p>
-      <div className='about-options-box'>
-        <p className='about-text'>Projeto realizado pelo aluno x, participante do grupo pet, como projeto para conclusão de curso</p>
-      </div>
-      <div className='about-back-button' onClick={() => setScreen(0)}>Voltar</div> */}
     </div>
   );
 }

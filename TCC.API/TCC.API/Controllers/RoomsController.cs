@@ -77,6 +77,23 @@ namespace TCC.API.Controllers
             }
         }
 
+        // GET: Rooms
+        // Recebe o nome de uma sala específica
+        [HttpGet]
+        public async Task<ActionResult<IList<RoomViewModel>>> GetRoomName(string roomId)
+        {
+            Room room = await _context.Rooms.FirstOrDefaultAsync(x => x.Id == roomId);
+
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            RoomViewModel roomView = new RoomViewModel(room.Id, room.Name, room.Started, room.Players.Count());
+
+            return Ok(roomView);
+        }
+
         //// Post: Rooms/5
         //// Inicia uma sala
         //[HttpPost("{id}")]

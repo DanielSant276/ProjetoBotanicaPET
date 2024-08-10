@@ -23,52 +23,53 @@ const playerPlaceHolder: IPlayer = {
 export default function App() {
   const [screenLoaded, setScreenLoaded] = useState<boolean>(true);
   const [user, setUser] = useState<IPlayer>(playerPlaceHolder);
-  const [screen, setScreen] = useState<number>(1);
+  const [screen, setScreen] = useState<number>(0);
 
-  // useEffect(() => {
-  //   let userToken = Cookies.get("userToken");
+  useEffect(() => {
+    let userToken = Cookies.get("userToken");
 
-  //   const fetchUser = async () => {
-  //     const user = await getUser(userToken);
+    const fetchUser = async () => {
+      const user = await getUser(userToken);
 
-  //     if (user) {
-  //       if (!userToken) {
-  //         Cookies.set("userToken", user.id, { expires: 30 });
-  //       }
+      if (user) {
+        if (!userToken) {
+          Cookies.set("userToken", user.id, { expires: 30 });
+        }
 
-  //       let newUser: IPlayer = {
-  //         id: user.id,
-  //         name: user.name === undefined ? "" : user.name,
-  //         ready: false,
-  //       };
+        let newUser: IPlayer = {
+          id: user.id,
+          name: user.name === undefined ? "" : user.name,
+          ready: false,
+        };
 
-  //       setUser(newUser);
-  //       setScreenLoaded(true);
+        setUser(newUser);
+        setScreenLoaded(true);
 
-  //       fetchPlayerInRoom(user.id);
-  //     }
-  //   };
+        fetchPlayerInRoom(user.id);
+      }
+    };
 
-  //   const fetchPlayerInRoom = async (userId: string) => {
-  //     const room = await verifyPlayerInRoom(userId);
+    const fetchPlayerInRoom = async (userId: string) => {
+      debugger;
+      const room = await verifyPlayerInRoom(userId);
 
-  //     if (room === "Jogador não encontrado") {
-  //       console.log("Jogador não encontrado");
-  //     } else if (
-  //       room === "Sala não encontrada" ||
-  //       room === undefined ||
-  //       room === null
-  //     ) {
-  //       console.log("Sala não encontrada");
-  //     } else if (room === "Sala não iniciada") {
-  //       console.log("Sala não iniciada");
-  //     } else if (typeof room === "string") {
-  //       window.location.href = `/Room/${room}`;
-  //     }
-  //   };
+      if (room === "Jogador não encontrado") {
+        console.log("Jogador não encontrado");
+      } else if (
+        room === "Sala não encontrada" ||
+        room === undefined ||
+        room === null
+      ) {
+        console.log("Sala não encontrada");
+      } else if (room === "Sala não iniciada") {
+        console.log("Sala não iniciada");
+      } else if (typeof room === "string") {
+        window.location.href = `/Room/${room}`;
+      }
+    };
 
-  //   fetchUser();
-  // }, []);
+    fetchUser();
+  }, []);
 
   return (
     <div>
@@ -84,29 +85,39 @@ export default function App() {
                   <p className="title-logo-2">PLANTAS</p>
                   <p className="title-logo-3">MEDICINAIS</p>
                 </div>
-                <img src={plantLogo} className="plant-logo" />
+                <img
+                  src={plantLogo}
+                  className="plant-logo"
+                  alt="Logo do projeto"
+                />
               </div>
             </div>
 
             <div className="buttons-space">
               <div className="image-wrapper">
                 <div className="circle-image-intern">
-                  <img src={plantsCircleIntern} />
+                  <img
+                    src={plantsCircleIntern}
+                    alt="Imagem de plantas interna que gira a esquerda"
+                  />
                 </div>
                 <div className="circle-image-extern">
-                  <img src={plantsCircleExtern} />
+                  <img
+                    src={plantsCircleExtern}
+                    alt="Imagem de plantas externas que gira a direita"
+                  />
                 </div>
               </div>
               <div className="play-icon" onClick={() => setScreen(1)}>
-                <img src={play} />
+                <img src={play} alt="Botão de jogar" />
                 <p>JOGAR</p>
               </div>
               <div className="info-project-icon" onClick={() => setScreen(2)}>
-                <img src={infoProject} />
+                <img src={infoProject} alt="Botão de informações do projeto" />
                 <p>PROJETO</p>
               </div>
               <div className="info-plants-icon" onClick={() => setScreen(3)}>
-                <img src={infoPlants} />
+                <img src={infoPlants} alt="Botão de informações das plantas" />
                 <p>PLANTAS</p>
               </div>
             </div>
