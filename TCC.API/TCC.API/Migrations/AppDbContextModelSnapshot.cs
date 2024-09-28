@@ -52,12 +52,27 @@ namespace TCC.API.Migrations
                         .HasMaxLength(1500)
                         .HasColumnType("varchar(1500)");
 
+                    b.Property<string>("Curiosity")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("varchar(1500)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("References")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("varchar(1500)");
+
                     b.Property<string>("ScientificName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("UsedPart")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");

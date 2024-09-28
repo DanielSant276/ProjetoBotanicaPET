@@ -101,7 +101,7 @@
   align-items: center;
 }
 
-.rooms-home-button {
+.rooms-home-button, .rooms-att-button {
   margin-left: 25px;
 }
 
@@ -219,7 +219,7 @@
   justify-content: space-between;
 }
 
-.rooms-modal-alert-text-no-name, .rooms-modal-alert-text-invalid-name {
+.rooms-modal-alert-text-invalid-name {
   font-size: 16px;
   font-family: 'Gotham-Medium';
   text-align: center;

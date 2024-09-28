@@ -10,7 +10,7 @@ using TCC.API.Models;
 
 namespace TCC.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class PlantsController : ControllerBase
     {

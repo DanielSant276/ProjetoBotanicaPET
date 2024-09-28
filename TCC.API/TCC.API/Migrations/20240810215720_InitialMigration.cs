@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TCC.API.Migrations
 {
     /// <inheritdoc />
-    public partial class MigracaoInicial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,13 @@ namespace TCC.API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ScientificName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    UsedPart = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     About = table.Column<string>(type: "varchar(1500)", maxLength: 1500, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Curiosity = table.Column<string>(type: "varchar(1500)", maxLength: 1500, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    References = table.Column<string>(type: "varchar(1500)", maxLength: 1500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>

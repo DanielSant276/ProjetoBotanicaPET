@@ -78,28 +78,16 @@ namespace TCC.API.Controllers
         // GET: Players/VerifyPlayerInRoom/{PlayerResponse}
         // Verifica se o jogador está em uma sala que o jogo já tenha iniciado
         [HttpGet]
-        public async Task<ActionResult<Player>> VerifyPlayerInRoom(string playerId)
+        public async Task<ActionResult<Boolean>> VerifyPlayerInRoom(string playerId, string roomId)
         {
             Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
 
-            if (player == null)
+            if (player == null || player.RoomId != roomId)
             {
-                return Ok("Jogador não encontrado");
+                return Ok(false);
             }
 
-            Room room = await _context.Rooms.FirstOrDefaultAsync(x => x.Id == player.RoomId);
-
-            if (room == null)
-            {
-                return Ok("Sala não encontrada");
-            }
-
-            if (room.Started)
-            {
-                return Ok(room.Id);
-            }
-
-            return Ok("Sala não iniciada");
+            return Ok(true);
         }
     }
 }

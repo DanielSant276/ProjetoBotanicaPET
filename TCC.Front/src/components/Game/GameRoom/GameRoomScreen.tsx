@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./GameRoomScreen.css";
 import { PlayerBoard } from "./PlayerBoard";
 import {
@@ -11,10 +11,11 @@ import {
   gameReceivedBoard,
   gameReceivedNumber,
   gameReceivedRanking,
+  gameSendActionToHub,
   gameStartHub,
   gameUpdateRanking,
 } from "../Api/hubGameRoom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { HubConnection } from "@microsoft/signalr";
 import { IRanking } from "../../../interfaces/IRanking";
 import Cookies from "js-cookie";
@@ -23,17 +24,39 @@ import helpButton from "../../../imgs/icons/help.png";
 import homeButton from "../../../imgs/icons/home.png";
 import backButton from "../../../imgs/icons/back.png";
 import backImage from "../../../imgs/layout/plants-wheel-intern.png";
+import stageImage from "../../../imgs/layout/stage.png";
+import victoryImage from "../../../imgs/layout/victory.png";
+import endGameImage from "../../../imgs/layout/end-game.png";
 import { Modal } from "@mui/material";
-import { getRoomName } from "../Api/useRooms";
+import { getRoom, verifyPlayerInRoom } from "../Api/useRooms";
+import { useErrorModal } from "../ErrorModal/ErrorModalProvider";
+import RulesModal from "./RulesModal";
 
-const images = require.context("../../../imgs/plants", true);
-const imageList = images.keys().map((image) => images(image));
+const imagesColored = require.context(
+  "../../../imgs/plants/testeColorido",
+  true
+);
+const imageListColored = imagesColored
+  .keys()
+  .map((image) => imagesColored(image));
+const imagesBlackWhite = require.context(
+  "../../../imgs/plants/testePretoBranco",
+  true
+);
+const imageListBlackWhite = imagesBlackWhite
+  .keys()
+  .map((image) => imagesBlackWhite(image));
 
 let timerNumber = 1;
 
 export default function GameRoomScreen() {
   const { gameId } = useParams();
   const userToken = Cookies.get("userToken");
+  const { showError } = useErrorModal();
+
+  const navigate = useNavigate();
+
+  const [screenLoaded, setScreenLoaded] = useState<boolean>(true);
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [roomName, setRoomName] = useState<string>("");
@@ -44,13 +67,31 @@ export default function GameRoomScreen() {
 
   const [boardNumbers, setBoardNumbers] = useState<number[]>([]);
 
-  const [ranking, setRanking] = useState<IRanking[]>([]);
+  const [ranking, setRanking] = useState<IRanking[]>([{playerId: 'a', playerName: 'teste1', playerPoint: 600},
+    {playerId: 'a', playerName: 'teste2', playerPoint: 400},
+    {playerId: 'a', playerName: 'teste3', playerPoint: 600},
+    {playerId: 'a', playerName: 'teste4', playerPoint: 600}]);
 
   const [playerName, setPlayerName] = useState<string>("");
 
   const [openHelpRoom, setOpenHelpRoom] = useState<boolean>(false);
-  const [winningPlayer, setWinningPlayer] = useState<string>("");
+  const [winningPlayer, setWinningPlayer] = useState<string>("a");
+  const [winningPlayerToken, setWinningPlayerToken] = useState<string>("");
 
+  const [startScreenModal, setStartScreenModal] = useState<boolean>(false);
+  const [startSecondCount, setStartSecondCount] = useState<number>(/* 20 */ 3);
+
+  const [gridSelected, setGridSelected] = useState<boolean[]>(
+    Array(boardNumbers.length).fill(false)
+  );
+  const [mark, setMark] = useState<boolean>(false);
+
+  // Redireciona o usuário para a sala selecionada
+  const goToHomeScreen = () => {
+    navigate(`/`);
+  };
+
+  // Marca um número no tabuleiro e atualiza o ranking
   const markNumber = () => {
     if (connection && gameId && userToken) {
       const updatedRanking = ranking.map((player) =>
@@ -59,41 +100,82 @@ export default function GameRoomScreen() {
           : player
       );
 
-      // Atualiza o estado com o novo array
+      // Atualiza o estado com o novo ranking
       setRanking(updatedRanking);
       gameGainPoint(connection, gameId, userToken);
     }
   };
 
+  // Função que chama "Bingo" e notifica o servidor
   const callBingo = () => {
     if (connection && gameId && userToken) {
-      gameCallBingo(connection, gameId, userToken);
+      if (gridSelected.every((value) => value === true)) {
+        gameCallBingo(connection, gameId, userToken);
+        showError("BINGO! Você venceu", "sideErrorMessage");
+      } else {
+        showError("Ainda falta marcar algumas plantas!", "sideErrorMessage");
+      }
     }
   };
 
+  // TODO: Não esquecer de reativar isso aqui
   useEffect(() => {
-    if (gameId) {
-      const fetchRoom = async () => {
-        try {
-          const roomsData = await getRoomName(gameId);
-          if (roomsData !== undefined) {
-            setRoomName(roomsData.name);
-          }
-        } catch (error) {
-          console.error("Erro loading rooms:", error);
-        }
+    if (userToken && gameId) {
+      const fetchPlayer = async () => {
+        // const playerData = await verifyPlayerInRoom(userToken, gameId);
+
+        // debugger;
+        // if (!playerData) {
+        //   window.location.href = `/Rooms`;
+        // }
+        // else {
+        //   setScreenLoaded(true);
+        // }
+        setScreenLoaded(true);
+        setStartScreenModal(true);
       };
 
-      fetchRoom();
+      fetchPlayer();
     }
-  }, [gameId]);
+  }, [userToken, gameId]);
 
   useEffect(() => {
-    if (gameId && userToken) {
+    if (startScreenModal && startSecondCount > 0) {
+      const timer = setTimeout(() => {
+        setStartSecondCount(startSecondCount - 1);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else if (startScreenModal && startSecondCount === 0) {
+      setStartScreenModal(false);
+      setMark(true);
+    }
+  }, [startScreenModal, startSecondCount]);
+
+  // useEffect para carregar as informações da sala ao montar o componente
+  useEffect(() => {
+    // if (gameId && screenLoaded) {
+    //   const fetchRoom = async () => {
+    //     try {
+    //       const roomsData = await getRoom(gameId);
+    //       if (roomsData !== undefined) {
+    //         setRoomName(roomsData.name);
+    //       }
+    //     } catch (error) {
+    //       console.error("Erro loading rooms:", error);
+    //     }
+    //   };
+    //   fetchRoom();
+    // }
+  }, [gameId, screenLoaded]);
+
+  // useEffect para configurar o hub SignalR ao montar o componente
+  useEffect(() => {
+    if (gameId && userToken && screenLoaded) {
       gameStartHub(
         "https://localhost:8080/Gamehub",
         gameId,
-        imageList.length,
+        imageListColored.length,
         setConnection
       );
 
@@ -101,10 +183,11 @@ export default function GameRoomScreen() {
         connection?.stop();
       };
     }
-  }, [gameId, userToken]);
+  }, [gameId, userToken, screenLoaded]);
 
+  // useEffect para configurar a recepção de números sorteados, cartelas e ranking
   useEffect(() => {
-    if (connection && gameId && userToken) {
+    if (connection && gameId && userToken && !startScreenModal) {
       gameGetNumber(connection, gameId, numbersAlreadyDrawn.length);
 
       gameReceivedNumber(connection, (number: number) => {
@@ -114,7 +197,7 @@ export default function GameRoomScreen() {
         setNextNumberTimer(timerNumber);
       });
 
-      gameGetBoard(connection, userToken, imageList.length);
+      gameGetBoard(connection, userToken, imageListColored.length);
 
       // aqui eu preciso receber alem das informações do board, preciso do nome do jogador também
       gameReceivedBoard(connection, (value: string) => {
@@ -122,7 +205,7 @@ export default function GameRoomScreen() {
         setBoardNumbers(value.split(",").map((number) => parseInt(number)));
       });
 
-      gameGetRanking(connection, gameId);
+      // gameGetRanking(connection, gameId);
 
       gameReceivedRanking(connection, (ranking: IRanking[]) => {
         // debugger;
@@ -140,12 +223,14 @@ export default function GameRoomScreen() {
         });
       });
 
-      gameEndGame(connection, (playerName: string) => {
+      gameEndGame(connection, (playerName: string, playerToken: string) => {
         setWinningPlayer(playerName);
+        setWinningPlayerToken(playerToken);
       });
     }
-  }, [connection, gameId, userToken]);
+  }, [connection, gameId, userToken, startScreenModal]);
 
+  // useEffect para gerenciar o temporizador para o próximo número sorteado
   useEffect(() => {
     if (nextNumberTimer > 0 && connection && gameId) {
       const timer = setTimeout(() => {
@@ -153,7 +238,7 @@ export default function GameRoomScreen() {
 
         if (
           nextNumberTimer - 1 === 0 &&
-          numbersAlreadyDrawn.length < imageList.length
+          numbersAlreadyDrawn.length < imageListColored.length
         ) {
           gameGetNumber(connection, gameId, numbersAlreadyDrawn.length);
         } else {
@@ -165,143 +250,217 @@ export default function GameRoomScreen() {
     }
   }, [nextNumberTimer]);
 
-  useEffect(() => {
-    if (winningPlayer !== "") {
-      alert(`O Jogador ${winningPlayer} ganhou o jogo!`);
-      setNextNumberTimer(-1);
-    }
-  }, [winningPlayer]);
+  // useEffect para mostrar um alerta quando o jogo é vencido
+  // useEffect(() => {
+  //   if (winningPlayer !== "") {
+  //     if (userToken === winningPlayerToken) {
+  //       setNextNumberTimer(-1);
+  //       showError('Você gannhou o jogo', "errorMessage");
+  //     }
+  //     else {
+  //       showError(`O Jogador ${winningPlayer} ganhou o jogo!`, "errorMessage");
+  //     }
+  //   }
+  // }, [winningPlayer]);
 
   return (
-    <div className="main-screen column">
-      <div className="game-room-background-image-space">
-        <img
-          src={backImage}
-          className="game-room-background-image"
-          alt="Imagem de fundo"
-        />
-      </div>
+    <Fragment>
+      {!screenLoaded && <div className="main-screen"></div>}
 
-      <div className="game-room-header">
-        <p className="game-room-header-title">BINGO</p>
-        <img
-          className="game-room-header-img"
-          src={plantLogo}
-          alt="Logo do projeto"
-        />
-      </div>
+      {/* {(screenLoaded && winningPlayer === "") &&
+        <div className="main-screen column">
+          <div className="game-room-background-image-space">
+            <img
+              src={backImage}
+              className="game-room-background-image"
+              alt="Imagem de fundo"
+            />
+          </div>
 
-      <div className="game-room-content">
-        <div className="game-room-main-grid">
-          <div className="game-room-names column">
-            <div className="game-room-name">
-              <p className="game-room-name-title">
-                SALA {roomName.toUpperCase()}
-              </p>
+          <div className="game-room-header">
+            <p className="game-room-header-title">BINGO</p>
+            <img
+              className="game-room-header-img"
+              src={plantLogo}
+              alt="Logo do projeto"
+            />
+          </div>
+
+          <div className="game-room-content">
+            <div className="game-room-main-grid">
+              <div className="game-room-names column">
+                <div className="game-room-name">
+                  <p className="game-room-name-title">
+                    SALA {roomName.toUpperCase()}
+                  </p>
+                </div>
+
+                <div className="game-room-players column">
+                  {ranking.map((rank) => (
+                    <div className="game-room-player" key={rank.playerId}>
+                      <div className="game-room-player-box-intern">
+                        <p className="game-room-player-name-text">
+                          {rank.playerName}
+                        </p>
+                        <p className="game-room-player-name-text">
+                          {rank.playerPoint === 0 ? "000" : rank.playerPoint}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="game-room-game-box column">
+                <div className="game-room-game-box-background"></div>
+                <PlayerBoard
+                  name={playerName}
+                  boardNumbers={boardNumbers}
+                  numbersAlreadyDrawn={numbersAlreadyDrawn}
+                  draftedNumber={draftedNumber}
+                  markNumber={markNumber}
+                  imageListColored={imageListColored}
+                  imageListBlackWhite={imageListBlackWhite}
+                  mark={mark}
+                  gridSelected={gridSelected}
+                  setGridSelected={setGridSelected}
+                />
+              </div>
             </div>
+          </div>
 
-            <div className="game-room-players column">
-              {ranking.map((rank) => (
-                <div className="game-room-player" key={rank.playerId}>
-                  <div className="game-room-player-box-intern">
-                    <p className="game-room-player-name-text">
-                      {rank.playerName}
-                    </p>
-                    <p className="game-room-player-name-text">
-                      {rank.playerPoint === 0 ? "000" : rank.playerPoint}
-                    </p>
+          <div className="game-room-footer">
+            <div className="game-room-footer-content">
+              <div className="game-room-footer-content-icons">
+                <img
+                  className="game-room-att-button"
+                  src={helpButton}
+                  onClick={() => setOpenHelpRoom(true)}
+                  alt="Botão de informações"
+                />
+              </div>
+              <div
+                className="game-room-footer-new-room"
+                onClick={() => callBingo()}
+              >
+                <div className="game-room-footer-new-room-intern">
+                  <p className="game-room-footer-new-room-text">BINGO</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Modal open={startScreenModal} onClose={() => setStartScreenModal(false)}>
+            <div className="game-room-modal-screen">
+              <div className="game-room-modal-box column">
+                <div className="game-room-modal-header">
+                  <div className="game-room-modal-header-circle" />
+                  <p className="game-room-modal-header-title">REGRAS BÁSICAS</p>
+                  <div className="game-room-modal-header-circle" />
+                </div>
+                <div className="game-room-modal-content column">
+                  <div className="game-room-modal-advice-text-content">
+                    <p className="game-room-modal-advice-text">O jogo irá começar em {startSecondCount} segundos</p>
+                  </div>
+                  <div className="game-room-modal-advice-text-content">
+                    <div className="game-room-modal-text-background" />
+                    <div className="column">
+                      <p className="game-room-modal-advice-text">
+                        O jogo vai começar!
+                      </p>
+                      <ul>
+                        <li className="game-room-modal-advice-text">A cada x segundos, uma planta será sorteada</li>
+                        <li className="game-room-modal-advice-text">Marque as plantas na sua cartela quando forem sorteadas</li>
+                        <li className="game-room-modal-advice-text">O primeiro a marcar toda a cartela e clicar no botão Bingo ganha</li>
+                        <li className="game-room-modal-advice-text">Informações mais detalhadas no botão ajuda (?)</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="game-room-modal-create-room">
+                    <img
+                      src={backButton}
+                      className="game-room-modal-back-button"
+                      onClick={() => setStartScreenModal(false)}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal open={openHelpRoom} onClose={() => setOpenHelpRoom(false)}>
+            <RulesModal setOpenHelpRoom={setOpenHelpRoom} />
+          </Modal>
+        </div>
+      } */}
+
+      {screenLoaded && winningPlayer !== "" && (
+        <div
+          className="main-screen column" style={{ justifyContent: "center" }}
+        >
+          <div className="end-game-box column">
+            <div className="end-game-box-header row">
+              <div className="end-game-header-circle" />
+              <div className="end-game-header-imgs column">
+                <img
+                  className="end-game-header-img-end-game"
+                  src={endGameImage}
+                  alt="Logo do projeto"
+                />
+                <img
+                  className="end-game-header-img-stage"
+                  src={stageImage}
+                  alt="Logo do projeto"
+                />
+                <img
+                  className="end-game-header-img-victory"
+                  src={victoryImage}
+                  alt="Logo do projeto"
+                />
+                <p className="end-game-header-winner-player">{ranking[0].playerName}</p>
+              </div>
+              <div className="end-game-header-circle" />
+            </div>
+            <div className="end-game-box-ranking row">
+              {ranking.map((item, index) => (
+                <div className="end-game-ranking-row">
+                  {index === 0 ?
+                  (<div className="end-game-ranking-winner-label">
+                    <div className="end-game-ranking-winner-label-intern">
+                      <p className="end-game-ranking-winner-label-text">Vencedor</p>
+                    </div>
+                  </div>) :
+                  (<div className="end-game-ranking-label">
+                    <div className="end-game-ranking-label-intern">
+                      <p className="end-game-ranking-label-text">{`${index + 1}º`} Lugar</p>
+                    </div>
+                  </div>)}
+                  <div className="end-game-ranking-player-info">
+                    <p className="end-game-ranking-player-name">{item.playerName}</p>
+                    <p className="end-game-ranking-player-points">{item.playerPoint} pts!</p>
                   </div>
                 </div>
               ))}
+              {[...Array(4 - ranking.length)].map((_, index) => (
+                <div className="end-game-ranking-row">
+                </div>
+              ))}
             </div>
-          </div>
-
-          <div className="game-room-game-box column">
-            <div className="game-room-game-box-background"></div>
-            <PlayerBoard
-              name={playerName}
-              boardNumbers={boardNumbers}
-              numbersAlreadyDrawn={numbersAlreadyDrawn}
-              markNumber={markNumber}
-              callBingo={callBingo}
+            <img 
+              className="end-game-home-button"
+              src={homeButton} 
+              onClick={() => {
+                if (connection && gameId) {
+                  gameSendActionToHub(connection, gameId);
+                  goToHomeScreen()
+                }
+              }}
+              alt="Botão de voltar para a Home"
             />
           </div>
         </div>
-      </div>
-
-      <div className="game-room-footer">
-        <div className="game-room-footer-content">
-          <div className="game-room-footer-content-icons">
-            {/* <img
-              className="game-room-back-button"
-              src={homeButton}
-              // onClick={() => setScreen(0)}
-            /> */}
-            <img
-              className="game-room-att-button"
-              src={helpButton}
-              onClick={() => setOpenHelpRoom(true)}
-              alt="Botão de informações"
-            />
-          </div>
-          <div
-            className="game-room-footer-new-room"
-            // onClick={() => createNewRoomOpener(true)}
-          >
-            <div className="game-room-footer-new-room-intern">
-              <p className="game-room-footer-new-room-text">BINGO</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Modal open={openHelpRoom} onClose={() => setOpenHelpRoom(false)}>
-        <div className="game-room-modal-screen">
-          <div className="game-room-modal-box column">
-            <div className="game-room-modal-header">
-              <div className="game-room-modal-header-circle" />
-              <p className="game-room-modal-header-title">COMO JOGAR</p>
-              <div className="game-room-modal-header-circle" />
-            </div>
-            <div className="game-room-modal-content column">
-              <div className="game-room-modal-logo">
-                <p className="game-room-modal-logo-title">BINGO</p>
-                <img
-                  className="game-room-modal-logo-img"
-                  src={plantLogo}
-                  alt="Logo do projeto"
-                />
-              </div>
-
-              <div className="game-room-modal-text-content">
-                <div className="game-room-modal-text-background" />
-                <p className="game-room-modal-text">
-                  O Bingo é um jogo pipipopopopo, você faz isso e aquilo,
-                  escolhe cartela e vê se a sua cartela bate com as foto que vão
-                  aparecer, nesse caso tem erva e se tuas ervas aparecerem você
-                  marca e aí você pontua e se pontuar as seis ervas você ganha,
-                  mas pra ganhar tem que aparecer as seis ervas da sua cartela
-                  na roleta do bingo e se for isso daí mesmo você ganha, mas
-                  lembra do Uno? Então, é parecido, do mesmo jeito que foda-se
-                  se você só tem uma carta, você tem que gritar UNO, foda-se se
-                  você marcou as seis ervas, TEM QUE MARCAR BINGOOO pra ganhar,
-                  beleza? Só apertar o botão vermelho grande escrito BINGO, sua
-                  mula. É assim que joga bingo de erva medicinal.
-                </p>
-              </div>
-
-              <div className="game-room-modal-create-room">
-                <img
-                  src={backButton}
-                  className="game-room-modal-back-button"
-                  onClick={() => setOpenHelpRoom(false)}
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
-    </div>
+      )}
+    </Fragment>
   );
 }

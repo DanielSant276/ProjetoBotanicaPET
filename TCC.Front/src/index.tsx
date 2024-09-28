@@ -1,43 +1,56 @@
 import ReactDOM from 'react-dom/client';
-import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import App from './components/App';
+import About from './components/Game/Menus/About';
+import Info from './components/Game/Menus/Info';
+import ListRooms from './components/Game/Rooms/ListRooms';
 import GameRoomScreen from './components/Game/GameRoom/GameRoomScreen';
-import Room from './components/Game/Rooms/Room';
-import { IPlayer } from './interfaces/IPlayer';
-import { IRoom } from './interfaces/IRoom';
+import { ErrorModalProvider } from "./components/Game/ErrorModal/ErrorModalProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const user: IPlayer = {id: '', name: 'Daniel', ready: false};
-const setUser = (value: IPlayer) => {
-
-};
-const roomInfo: IRoom = {id: '23abebeb-6bd0-4f3f-a326-ace7fd5dab19', name: 'a', started: false, numberOfPlayers: 3};
-const resetRoom = () => {
-
-};
-
+// Definindo as rotas da aplicação usando o React Router
 const router = createBrowserRouter([
   {
+    // Rota principal que renderiza o componente App
     path: '/',
     element: <App />
   },
   {
-    path: '/Room/:gameId',
-    element: <GameRoomScreen />
+    // Rota para a página Sobre
+    path: '/About',
+    element: <About />
   },
   {
-    path: '/RoomTest',
-    element: <Room roomInfo={roomInfo}  setUser={setUser} user={user} resetRoom={resetRoom} />
+    // Rota para a página de Informações
+    path: '/Info',
+    element: <Info />
+  },
+  {
+    // Rota para a listagem de salas de jogo
+    path: '/Rooms',
+    element: <ListRooms />
+  },
+  // {
+  //   // Rota para uma sala específica com um roomId dinâmico
+  //   path: '/Room/:roomId',
+  //   element: <Room />
+  // },
+  {
+    // Rota para uma partida específica com um roomId dinâmico
+    path: '/Game/:gameId',
+    element: <GameRoomScreen />
   }
 ]);
 
 root.render(
   // <React.StrictMode>
+  <ErrorModalProvider>
     <RouterProvider router={router} />
+  </ErrorModalProvider>
   // </React.StrictMode>
 );
 

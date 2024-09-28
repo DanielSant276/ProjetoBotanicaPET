@@ -45,5 +45,26 @@
         {
             _roomStarted[roomId] = true;
         }
+
+        public void ClearRoomData(string roomId)
+        {
+            // Remove os números sorteados da sala
+            if (_sortedNumbers.ContainsKey(roomId))
+            {
+                _sortedNumbers.Remove(roomId);
+            }
+
+            // Remove o índice de sorteio da sala
+            if (_sortedNumberIndex.ContainsKey(roomId))
+            {
+                _sortedNumberIndex.Remove(roomId);
+            }
+
+            // Remove o status da sala (se ela foi iniciada ou não)
+            if (_roomStarted.ContainsKey(roomId))
+            {
+                _roomStarted.Remove(roomId);
+            }
+        }
     }
 }

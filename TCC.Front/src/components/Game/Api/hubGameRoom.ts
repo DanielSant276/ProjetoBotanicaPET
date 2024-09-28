@@ -27,7 +27,9 @@ export const gameStartHub = async (url: string, roomId: string, maxNumber: numbe
       window.addEventListener("popstate", () => {
         // eslint-disable-next-line no-restricted-globals
         if (history.state) {
+          
         } else {
+
         }
       });
   }
@@ -36,6 +38,14 @@ export const gameStartHub = async (url: string, roomId: string, maxNumber: numbe
     console.log(e);
   }
 };
+
+
+// TODO: ver se está implementado
+export const gameSendActionToHub = async (connection: HubConnection, roomId: string) =>  {
+  //debugger;
+  connection.invoke("CloseConection", roomId);
+}
+
 
 export const gameGetNumber = (connection: HubConnection, roomId: string, indexNumberSorted: number): void => {
   // debugger;
@@ -82,7 +92,7 @@ export const gameCallBingo = (connection: HubConnection, roomId: string, playerI
   connection.invoke("CallBingo", roomId, playerId);
 }
 
-export const gameEndGame = (connection: HubConnection, callback: (playerName: string) => void): void => {
+export const gameEndGame = (connection: HubConnection, callback: (playerName: string, playerToken: string) => void): void => {
   // debugger;
   connection.on("CallBingo", callback);
 };

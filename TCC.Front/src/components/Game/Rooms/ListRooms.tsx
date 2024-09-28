@@ -1,9 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
 import "./ListRooms.css";
-import { createRoom, getRooms } from "../Api/useRooms";
+import {
+  createRoom,
+  getRooms,
+  getVerifyRoom,
+} from "../Api/useRooms";
 import { IRoom } from "../../../interfaces/IRoom";
 import { IPlayer } from "../../../interfaces/IPlayer";
-import { updateUser } from "../Api/useUser";
+import { getUser, updateUser } from "../Api/useUser";
 import Room from "./Room";
 import { Modal } from "@mui/material";
 import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
@@ -11,8 +15,17 @@ import backButton from "../../../imgs/icons/back.png";
 import playButton from "../../../imgs/icons/play.png";
 import attButton from "../../../imgs/icons/att.png";
 import { vigenereEncrypt } from "../EncryptFunction/vigenere";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { useErrorModal } from "../ErrorModal/ErrorModalProvider";
 
-export default function ListRooms({ setScreen, user, setUser }: Props) {
+const playerPlaceHolder: IPlayer = {
+  id: "",
+  name: "",
+  ready: false,
+};
+
+export default function ListRooms() {
   const [rooms, setRooms] = useState<IRoom[] | undefined>();
   const [roomsNotStarted, setRoomsNotStarted] = useState<number>(0);
   const [roomChosed, setRoomChosed] = useState<IRoom | null>(null);
@@ -21,24 +34,39 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
   const [openCreateRoom, setOpenCreateRoom] = useState<boolean>(false);
   const [newRoomName, setNewRoomName] = useState<string>("");
 
-  const [emptyName, setEmptyName] = useState<boolean>(false);
-  const [invalidName, setInvalidName] = useState<boolean>(false);
+  const [invalidName, setInvalidName] = useState<string>("");
   const [invalidWord, setInvalidWord] = useState<string[]>([]);
 
   const [roomsNumbers, setRoomsNumbers] = useState<number[]>([]);
 
-  const verifyRoom = (room: IRoom) => {
-    if (user.name !== "" && !user.name.startsWith(" ")) {
-      if (room.numberOfPlayers > 3) {
-        alert("Essa sala está lotada");
-      } else {
+  const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
+  const [user, setUser] = useState<IPlayer>(playerPlaceHolder);
+
+  const { showError } = useErrorModal();
+
+  const navigate = useNavigate();
+
+  // Redireciona o usuário para a tela inicial
+  const goToHomeScreen = () => {
+    navigate(`/`);
+  };
+
+  // Verifica se a sala está disponível e se o jogador pode entrar nela
+  const verifyRoom = async (room: IRoom) => {
+    if (user.name !== "" && !user.name.startsWith(" ") && user.name.length <= 10) {
+      const roomsData = await getVerifyRoom(room.id);
+      if (roomsData) {
         setRoomChosed(room);
+      } else {
+        showError("Essa sala está lotada", "errorMessage");
+        setReloadRooms(!reloadRooms);
       }
     } else {
-      alert("Adicione um nome apropriado antes de tentar entrar na sala");
+      showError("Adicione um nome apropriado antes de tentar entrar na sala", "errorMessage");
     }
   };
 
+  // Atualiza o nome do jogador
   const handleChangeUser = (newName: string) => {
     let player = user;
     player.name = newName;
@@ -46,58 +74,68 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     setUser({ ...player });
   };
 
+  // Atualiza o nome da nova sala a ser criada
   const handleChangeNewRoomName = (newRoomName: string) => {
     setNewRoomName(newRoomName);
   };
 
   const resetRoom = () => {
     setRoomChosed(null);
-    setTimeout(() => {
-      setReloadRooms(!reloadRooms);
-    }, 500);
   };
-
+  // Abre o modal para criar uma nova sala, verificando se o nome do jogador foi inserido
   const createNewRoomOpener = (open: boolean) => {
     if (user.name === "") {
-      alert("nome do jogador não selecionado");
-    } else {
+      showError("Nome do jogador não selecionado", "errorMessage");
+    } 
+    else if (user.name.startsWith(" ") || user.name.length > 10) {
+      showError("Nome do jogador inválido", "errorMessage");
+    } 
+    else {
       setOpenCreateRoom(open);
     }
   };
 
+  // Cria uma nova sala e redireciona o jogador para ela
   const createNewRoom = async () => {
-    setInvalidName(false);
-    setEmptyName(false);
 
     if (newRoomName === "") {
-      setEmptyName(true);
+      setInvalidName("Insira um nome para a nova sala");
       return;
     } else {
-      setInvalidName(false);
-      setEmptyName(false);
+      setInvalidName("");
+    }
+
+    if (newRoomName.length > 8) {
+      setInvalidName("Nome da sala com mais de 8 caracteres");
+      return;
+    } else {
+      setInvalidName("");
     }
 
     if (verifyInvalidName(newRoomName)) {
-      setInvalidName(true);
+      setInvalidName("Nome inválido");
       return;
     } else {
-      setInvalidName(false);
+      setInvalidName("");
     }
 
     setOpenCreateRoom(false);
+    
+    let newRoom = await createRoom(newRoomName, user, showError);
 
-    let newRoom = await createRoom(newRoomName, user);
     if (newRoom) {
       setRoomChosed(newRoom);
-      // loobyGetAllRoomsInvoke(connection);
-    } else {
+    }
+    else {
       alert("Ocorreu um erro na criação da sala");
       return;
     }
+    
     // final da parte do hub
     setNewRoomName("");
   };
 
+  // Verifica se o nome da sala é válido
   const verifyInvalidName = (name: string) => {
     const regex = /[^a-zA-Z0-9]/;
 
@@ -113,6 +151,32 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     return false;
   };
 
+  // carregar as informações do usuário ao montar o componente
+  useEffect(() => {
+    let userToken = Cookies.get("userToken");
+
+    const fetchUser = async () => {
+      const user = await getUser(userToken);
+
+      if (user) {
+        if (!userToken) {
+          Cookies.set("userToken", user.id, { expires: 30 });
+        }
+
+        let newUser: IPlayer = {
+          id: user.id,
+          name: user.name === undefined ? "" : user.name,
+          ready: false,
+        };
+
+        setUser(newUser);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // gerar números aleatórios para exibição
   useEffect(() => {
     let numbers = [];
 
@@ -123,46 +187,40 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     setRoomsNumbers(numbers);
   }, []);
 
-  // verifica as salas que existe e recarrega sempre que alguém apertar em um botão de load
+  // carrega as salas disponíveis e as recarrega quando necessário
   useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const roomsData = await getRooms();
-        if (roomsData !== undefined) {
-          setRooms(roomsData);
+    if (user) {
+      const fetchRooms = async () => {
+        try {
+          const roomsData = await getRooms(user.id);
+          if (roomsData !== undefined) {
+            setRooms(roomsData);
 
-          const countNotStartedRooms = roomsData.filter(
-            (room) => !room.started
-          ).length;
+            const countNotStartedRooms = roomsData.length;
 
-          setRoomsNotStarted(countNotStartedRooms);
+            setRoomsNotStarted(countNotStartedRooms);
+
+            setScreenLoaded(true);
+          }
+        } catch (error) {
+          console.error("Erro loading rooms:", error);
         }
-      } catch (error) {
-        console.error("Erro loading rooms:", error);
-      }
-    };
+      };
 
-    fetchRooms();
-  }, [reloadRooms]); // eslint-disable-line react-hooks/exhaustive-deps
+      fetchRooms();
+    }
+  }, [reloadRooms, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (roomChosed == null) {
-        setReloadRooms(!reloadRooms);
-        console.log("reload");
-      }
-    }, 20000); // 20 segundos em milissegundos
-
-    // Limpa o intervalo quando o componente é desmontado ou atualizado
-    return () => clearInterval(intervalId);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // debouncer
+  // debouncer para verificar a validade do nome do jogador e atualizá-lo
   useEffect(() => {
     const debounceFunction = setTimeout(() => {
       if (user.name !== "") {
-        if (verifyInvalidName(user.name)) {
-          alert("nome escolhido não é valido");
+        if (user.name.length > 10) {
+          showError("Nome escolhido é maior do que o permitido", "errorMessage");
+          return;
+        }
+        else if (verifyInvalidName(user.name)) {
+          showError("Nome escolhido não é valido", "errorMessage");
           return;
         } else {
           const fetchUser = async () => {
@@ -177,7 +235,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
     return () => clearTimeout(debounceFunction);
   }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // pega as palavras do arquivo
+  // carrega as palavras inválidas a partir de um arquivo de texto
   useEffect(() => {
     fetch("/notValidWordsEncrypt.txt")
       .then((response) => response.text())
@@ -208,47 +266,44 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
           <div className="rooms-content">
             <div className="rooms-grid">
               {rooms?.map((room, index) => {
-                if (!room.started) {
-                  return (
-                    <Fragment key={room.id}>
-                      <div
-                        className="rooms-grid-box column"
-                        key={room.id}
-                        onClick={() => verifyRoom(room)}
+                return (
+                  <Fragment key={room.id}>
+                    <div
+                      className="rooms-grid-box column"
+                      key={room.id}
+                      onClick={() => verifyRoom(room)}
+                    >
+                      <p
+                        className={`${
+                          room.numberOfPlayers === 4
+                            ? "rooms-grid-box-text red-color"
+                            : "rooms-grid-box-text"
+                        }`}
                       >
-                        <p
-                          className={`${
-                            room.numberOfPlayers === 4
-                              ? "rooms-grid-box-text red-color"
-                              : "rooms-grid-box-text"
-                          }`}
-                        >
-                          SALA {room.name.toUpperCase()}
-                        </p>
-                        <p
-                          className={`${
-                            room.numberOfPlayers === 4
-                              ? "rooms-grid-box-rooms-players red-color"
-                              : "rooms-grid-box-rooms-players"
-                          }`}
-                        >
-                          {room.numberOfPlayers}/4
-                        </p>
-                      </div>
+                        SALA {room.name.toUpperCase()}
+                      </p>
+                      <p
+                        className={`${
+                          room.numberOfPlayers === 4
+                            ? "rooms-grid-box-rooms-players red-color"
+                            : "rooms-grid-box-rooms-players"
+                        }`}
+                      >
+                        {room.numberOfPlayers}/4
+                      </p>
+                    </div>
 
-                      {index === 7 && (
-                        <div
-                          className="rooms-green-grid-box column"
-                          key="free-room"
-                        >
-                          <p className="rooms-green-grid-text-1">ESPAÇO</p>
-                          <p className="rooms-green-grid-text-2">LIVRE</p>
-                        </div>
-                      )}
-                    </Fragment>
-                  );
-                }
-                return null;
+                    {index === 7 && (
+                      <div
+                        className="rooms-green-grid-box column"
+                        key="free-room"
+                      >
+                        <p className="rooms-green-grid-text-1">ESPAÇO</p>
+                        <p className="rooms-green-grid-text-2">LIVRE</p>
+                      </div>
+                    )}
+                  </Fragment>
+                );
               })}
 
               {Array.from({ length: 15 - roomsNotStarted }, (_, index) =>
@@ -273,7 +328,7 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
                 <img
                   className="rooms-back-button"
                   src={backButton}
-                  onClick={() => setScreen(0)}
+                  onClick={() => goToHomeScreen()}
                   alt="Botão de voltar"
                 />
                 <img
@@ -317,22 +372,13 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
 
                   <div className="column">
                     <p
-                      className="rooms-modal-alert-text-no-name"
-                      style={{
-                        display: emptyName ? "flex" : "none",
-                        alignSelf: "center",
-                      }}
-                    >
-                      Insira um nome para a nova sala
-                    </p>
-                    <p
                       className="rooms-modal-alert-text-invalid-name"
                       style={{
-                        display: invalidName ? "flex" : "none",
+                        display: invalidName.length > 0 ? "flex" : "none",
                         alignSelf: "center",
                       }}
                     >
-                      Nome inválido
+                      {invalidName}
                     </p>
                     <input
                       type="text"
@@ -374,10 +420,4 @@ export default function ListRooms({ setScreen, user, setUser }: Props) {
       )}
     </Fragment>
   );
-}
-
-interface Props {
-  setScreen: (value: number) => void;
-  user: IPlayer;
-  setUser: (value: IPlayer) => void;
 }

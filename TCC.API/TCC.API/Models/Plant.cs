@@ -22,7 +22,16 @@ namespace TCC.API.Models
         [MaxLength(255)]
         public string ScientificName { get; set; }
 
+        [MaxLength(255)]
+        public string UsedPart { get; set; }
+
         [MaxLength(1500)]
         public string About { get; set; }
+
+        [MaxLength(1500)]
+        public string Curiosity { get; set; }
+
+        [MaxLength(1500)]
+        public string References { get; set; }
     }
 }

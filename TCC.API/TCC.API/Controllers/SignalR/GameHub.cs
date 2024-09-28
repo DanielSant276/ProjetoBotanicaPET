@@ -21,12 +21,12 @@ namespace TCC.API.Controllers.SignalR
 
         public async Task JoinGroup(string roomId, int maxNumber)
         {
-            // Da Join no grupo e inicia o sorteio dos números
+            // Adiciona o jogador ao grupo correspondente à sala de jogo.
             await Groups.AddToGroupAsync(Context.ConnectionId, $"game-{roomId}");
 
             await Clients.Group($"game-{roomId}").SendAsync("JoinGroup", "admin", "Conectado ao grupo");
 
-            // Verifica se já iniciou a criação dos números e gera todos eles de uma vez
+            // Verifica se a sala já iniciou o sorteio de números.
             if (!_storage.CheckAlreadyStartedRoom(roomId))
             {
                 _storage.SetStartedRoom(roomId);
@@ -38,7 +38,7 @@ namespace TCC.API.Controllers.SignalR
         private async Task<IList<int>> StartNumberGeneration(string roomId, int maxNumber)
         {
             var numbers = new List<int>();
-            // faz o sorteio de todos os números da lista
+            // Gera uma lista de números aleatórios únicos até o valor máximo especificado.
             for (var i = 0; i < maxNumber; i++)
             {
                 Random random = new Random();
@@ -56,18 +56,7 @@ namespace TCC.API.Controllers.SignalR
 
         public async Task GetNumber(string roomId, int indexNumberSorted)
         {
-            // fazer um ajuste para verificar se o index atual é maior por um ou igual do que o index registrado se for ok, se não for,
-            // enviar todos os números que já foram sorteados para o jogador e ajustar o index dele para o index atual + 1
-
-            //int storageIndex = _storage.GetRoomDrawIndex(roomId);
-
-            //if (indexNumberSorted == storageIndex || indexNumberSorted == storageIndex - 1)
-            //{
-            //    _storage.SetRoomDrawIndex(roomId, indexNumberSorted);
-            //}
-
-            //IList<int> allNumbers = _storage.GetNumbers(roomId);
-
+            // Obtém o número atual
             int number = _storage.GetNumber(roomId, indexNumberSorted);
 
             await Clients.Caller.SendAsync("ReceivedNumber", number);
@@ -109,8 +98,6 @@ namespace TCC.API.Controllers.SignalR
             board.DrawnNumbers = string.Join(",", generatedNumbers);
 
             await _context.SaveChangesAsync();
-
-            //GeneratedNumbersResponse generatedNumbersResponse = new GeneratedNumbersResponse(board.DrawnNumbers, board.Id);
 
             // envia para o jogador os números que foram sorteados para ele
             await Clients.Caller.SendAsync("ReceivedBoard", board.DrawnNumbers);
@@ -158,7 +145,33 @@ namespace TCC.API.Controllers.SignalR
         {
             Player player = await _context.Players.FindAsync(playerId);
 
-            await Clients.GroupExcept($"game-{roomId}", Context.ConnectionId).SendAsync("CallBingo", player.Name);
+            _storage.ClearRoomData(roomId);
+
+            // Notifica todos os membros do grupo, exceto o solicitante, que o jogador chamou "Bingo".
+            await Clients.Group($"game-{roomId}").SendAsync("CallBingo", player.Name, player.Id);
+        }
+
+        public async Task HandlePlayerDisconnection(string roomId, string playerId)
+        {
+            var room = await _context.Rooms.Include(r => r.Players).FirstOrDefaultAsync(r => r.Id == roomId);
+
+            if (room != null)
+            {
+                var player = room.Players.FirstOrDefault(p => p.Id == playerId);
+                if (player != null)
+                {
+                    room.Players.Remove(player);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (room.Players.Count == 0)
+                {
+                    _storage.ClearRoomData(roomId);
+
+                    _context.Rooms.Remove(room);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

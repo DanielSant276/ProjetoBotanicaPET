@@ -2,6 +2,12 @@
  --image-size: 200px; 
 }
 
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: var(--green-color);
+}
+
 .info-back-button {
   position: fixed;
   right: 35px;
@@ -29,7 +35,9 @@
 }
 
 .info-plant-box {
-  background-image: url('../../../imgs/layout/texture-card.png');
+  /* background-image: url('../../../imgs/layout/texture-card.png'); */
+  background-color: var(--main-color);
+  /* opacity: 0.5; */
   background-size: cover;
   border-radius: 25px;
   width: fit-content;
@@ -69,10 +77,74 @@
 .info-box-title-scientific {
   font-size: 15px;
   font-family: 'Gotham-Book';
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  font-style: italic;
 }
 
 .info-box-full-text {
   font-size: 16px;
   font-family: 'Gotham-Book';
+}
+
+.info-plant-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura total da viewport */
+  width: 100vw; /* Largura total da viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.info-plant-modal .info-plant-box {
+  background-color: #fff; /* Cor de fundo do conteúdo */
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  max-height: 90%;
+  overflow-y: auto; /* Adiciona rolagem se o conteúdo for muito grande */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para o modal */
+  position: relative;
+}
+
+.info-close-modal-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.info-box-show-more {
+  width: 150px;
+  height: 30px;
+  background-color: var(--red-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.info-box-show-more-intern {
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 3px 3px 5px;
+}
+
+.info-box-show-more-text {
+  text-align: center;
+  color: var(--red-color);
+  font-size: 16px;
+  font-family: 'Gotham-Medium';
+}
+
+.info-space {
+  margin-bottom: 16px;
 }

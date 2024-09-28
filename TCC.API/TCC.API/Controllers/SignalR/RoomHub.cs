@@ -122,6 +122,14 @@ namespace TCC.API.Controllers.SignalR
                 await Clients.Group($"room-{roomId}").SendAsync("StartGame", roomId);
                 
             }
+            else if (!playerReady)
+            {
+                await ChatMessage(roomId, "Um dos jogadores não está mais pronto");
+
+                room.Started = false;
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task ChatMessage(string roomId, string msg)
@@ -132,7 +140,7 @@ namespace TCC.API.Controllers.SignalR
         public async Task CloseConection(string roomId, string playerId)
         {
             Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
-            if (player == null)
+            if (player == null && roomId == null)
             {
                 await Clients.Caller.SendAsync("Error", "Player não encontrado.");
                 return;
@@ -141,8 +149,13 @@ namespace TCC.API.Controllers.SignalR
             Room room = await _context.Rooms.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == roomId);
             if (room == null)
             {
-                await Clients.Caller.SendAsync("Error", "Sala não encontrada.");
-                return;
+                room = await _context.Rooms.Include(x => x.Players).FirstOrDefaultAsync(x => x.Players.Any(p => p.Id == playerId));
+
+                if (room == null)
+                {
+                    await Clients.Caller.SendAsync("Error", "Sala não encontrada.");
+                    return;
+                }
             }
 
             bool playerInRoom = room.Players.Any(p => p.Id == playerId);
@@ -157,14 +170,14 @@ namespace TCC.API.Controllers.SignalR
             await _context.SaveChangesAsync();
 
             // Remove o jogador do grupo
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"room-{roomId}");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"room-{room.Id}");
 
             if (room.Players.Count > 0)
             {
                 // Avisa que o jogador saiu do grupo
-                await Clients.GroupExcept($"room-{roomId}", Context.ConnectionId).SendAsync("RemovePlayer", player);
+                await Clients.GroupExcept($"room-{room.Id}", Context.ConnectionId).SendAsync("RemovePlayer", player);
                 // Envia a mensagem de que o jogador saiu
-                await ChatMessage(roomId, $"O usuário {player.Name} saiu da sala");
+                await ChatMessage(room.Id, $"O usuário {player.Name} saiu da sala");
             }
             else
             {

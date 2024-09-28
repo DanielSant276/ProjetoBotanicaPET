@@ -2,8 +2,16 @@ import "./About.css";
 import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
 import aboutImage from "../../../imgs/layout/about-image.png";
 import backImage from "../../../imgs/icons/back.png";
+import { useNavigate } from "react-router-dom";
 
-export default function About({ setScreen }: Props) {
+export default function About() {
+  const navigate = useNavigate();
+  
+  // Função que redireciona o usuário para a tela inicial
+  const goToHomeScreen = () => {
+    navigate(`/`);
+  };
+  
   return (
     <div className="main-screen">
       <div className="about-image-space">
@@ -53,7 +61,7 @@ export default function About({ setScreen }: Props) {
             <img
               src={backImage}
               className="about-info-footer-back"
-              onClick={() => setScreen(0)}
+              onClick={() => goToHomeScreen()}
               alt="Botão de retornar a tela principal"
             />
           </div>
@@ -61,8 +69,4 @@ export default function About({ setScreen }: Props) {
       </div>
     </div>
   );
-}
-
-interface Props {
-  setScreen: (value: number) => void;
 }
