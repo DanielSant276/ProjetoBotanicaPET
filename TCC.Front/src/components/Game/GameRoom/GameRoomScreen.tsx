@@ -67,10 +67,10 @@ export default function GameRoomScreen() {
 
   const [boardNumbers, setBoardNumbers] = useState<number[]>([]);
 
-  const [ranking, setRanking] = useState<IRanking[]>([{playerId: 'a', playerName: 'teste1', playerPoint: 600},
-    {playerId: 'a', playerName: 'teste2', playerPoint: 400},
-    {playerId: 'a', playerName: 'teste3', playerPoint: 600},
-    {playerId: 'a', playerName: 'teste4', playerPoint: 600}]);
+  const [ranking, setRanking] = useState<IRanking[]>([{playerId: 'a', playerName: 'Fernanda', playerPoint: 600},
+    {playerId: 'a', playerName: 'WWWWWWWWWW', playerPoint: 400},
+    {playerId: 'a', playerName: 'teste3', playerPoint: 300},
+    {playerId: 'a', playerName: 'teste4', playerPoint: 200}]);
 
   const [playerName, setPlayerName] = useState<string>("");
 
@@ -118,19 +118,18 @@ export default function GameRoomScreen() {
     }
   };
 
-  // TODO: Não esquecer de reativar isso aqui
   useEffect(() => {
     if (userToken && gameId) {
       const fetchPlayer = async () => {
-        // const playerData = await verifyPlayerInRoom(userToken, gameId);
+        const playerData = await verifyPlayerInRoom(userToken, gameId);
 
-        // debugger;
-        // if (!playerData) {
-        //   window.location.href = `/Rooms`;
-        // }
-        // else {
-        //   setScreenLoaded(true);
-        // }
+        debugger;
+        if (!playerData) {
+          window.location.href = `/Rooms`;
+        }
+        else {
+          setScreenLoaded(true);
+        }
         setScreenLoaded(true);
         setStartScreenModal(true);
       };
@@ -154,19 +153,19 @@ export default function GameRoomScreen() {
 
   // useEffect para carregar as informações da sala ao montar o componente
   useEffect(() => {
-    // if (gameId && screenLoaded) {
-    //   const fetchRoom = async () => {
-    //     try {
-    //       const roomsData = await getRoom(gameId);
-    //       if (roomsData !== undefined) {
-    //         setRoomName(roomsData.name);
-    //       }
-    //     } catch (error) {
-    //       console.error("Erro loading rooms:", error);
-    //     }
-    //   };
-    //   fetchRoom();
-    // }
+    if (gameId && screenLoaded) {
+      const fetchRoom = async () => {
+        try {
+          const roomsData = await getRoom(gameId);
+          if (roomsData !== undefined) {
+            setRoomName(roomsData.name);
+          }
+        } catch (error) {
+          console.error("Erro loading rooms:", error);
+        }
+      };
+      fetchRoom();
+    }
   }, [gameId, screenLoaded]);
 
   // useEffect para configurar o hub SignalR ao montar o componente
@@ -205,7 +204,7 @@ export default function GameRoomScreen() {
         setBoardNumbers(value.split(",").map((number) => parseInt(number)));
       });
 
-      // gameGetRanking(connection, gameId);
+      gameGetRanking(connection, gameId);
 
       gameReceivedRanking(connection, (ranking: IRanking[]) => {
         // debugger;
@@ -251,23 +250,23 @@ export default function GameRoomScreen() {
   }, [nextNumberTimer]);
 
   // useEffect para mostrar um alerta quando o jogo é vencido
-  // useEffect(() => {
-  //   if (winningPlayer !== "") {
-  //     if (userToken === winningPlayerToken) {
-  //       setNextNumberTimer(-1);
-  //       showError('Você gannhou o jogo', "errorMessage");
-  //     }
-  //     else {
-  //       showError(`O Jogador ${winningPlayer} ganhou o jogo!`, "errorMessage");
-  //     }
-  //   }
-  // }, [winningPlayer]);
+  useEffect(() => {
+    if (winningPlayer !== "") {
+      if (userToken === winningPlayerToken) {
+        setNextNumberTimer(-1);
+        showError('Você gannhou o jogo', "errorMessage");
+      }
+      else {
+        showError(`O Jogador ${winningPlayer} ganhou o jogo!`, "errorMessage");
+      }
+    }
+  }, [winningPlayer]);
 
   return (
     <Fragment>
       {!screenLoaded && <div className="main-screen"></div>}
 
-      {/* {(screenLoaded && winningPlayer === "") &&
+      {(screenLoaded && winningPlayer === "") &&
         <div className="main-screen column">
           <div className="game-room-background-image-space">
             <img
@@ -393,7 +392,7 @@ export default function GameRoomScreen() {
             <RulesModal setOpenHelpRoom={setOpenHelpRoom} />
           </Modal>
         </div>
-      } */}
+      }
 
       {screenLoaded && winningPlayer !== "" && (
         <div
@@ -409,16 +408,16 @@ export default function GameRoomScreen() {
                   alt="Logo do projeto"
                 />
                 <img
-                  className="end-game-header-img-stage"
-                  src={stageImage}
-                  alt="Logo do projeto"
-                />
-                <img
                   className="end-game-header-img-victory"
                   src={victoryImage}
                   alt="Logo do projeto"
                 />
                 <p className="end-game-header-winner-player">{ranking[0].playerName}</p>
+                <img
+                  className="end-game-header-img-stage"
+                  src={stageImage}
+                  alt="Logo do projeto"
+                />
               </div>
               <div className="end-game-header-circle" />
             </div>
