@@ -2,6 +2,8 @@ import "./About.css";
 import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
 import aboutImage from "../../../imgs/layout/about-image.png";
 import backImage from "../../../imgs/icons/back.png";
+import petLogo from "../../../imgs/layout/logo_10anos.png"
+import ruralLogo from "../../../imgs/layout//rural_logo01.png"
 import { useNavigate } from "react-router-dom";
 
 export default function About() {
@@ -36,27 +38,36 @@ export default function About() {
           <div className="about-info-text-space">
             <p className="about-info-title">PROJETO</p>
             <p className="about-info-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              mattis finibus sapien sed placerat. Donec ultricies non est at
-              sodales. Integer molestie justo vitae efficitur hendrerit. Nunc
-              cursus at dui ac aliquet. Cras pharetra, diam non cursus
-              fringilla, est mi posuere erat, condimentum blandit nunc metus
-              vitae mauris. Cras tempus et ex nec rutrum. Integer ligula metus,
-              lobortis et cursus quis, laoreet nec nunc. Vestibulum eu feugiat
-              ligula, a volutpat quam. Aenean vehicula, libero vel viverra
-              ultricies, velit dolor dapibus magna, et tristique turpis ante
-              quis ligula. Aliquam sit amet laoreet arcu. In hac habitasse
-              platea dictumst. Sed consectetur semper efficitur. Sed efficitur
-              velit neque, sit amet condimentum nunc consectetur et. Vestibulum
-              ipsum mauris, lobortis eget suscipit nec, tempus eu risus.
+              Este projeto, desenvolvido no PET do curso de Sistemas de Informação da UFRRJ, visa criar uma versão digital 
+              do tradicional bingo de plantas medicinais, com o intuito de tornar o aprendizado sobre essas plantas mais 
+              acessível e envolvente. O jogo foi idealizado como uma ferramenta educativa para ensinar sobre as propriedades, 
+              usos terapêuticos e curiosidades das plantas medicinais de forma lúdica e interativa. <br />
+              Além de promover a educação sobre fitoterapia, o jogo estimula a curiosidade e o aprendizado colaborativo, 
+              utilizando elementos de competição saudável para engajar os participantes. A interface amigável garante que 
+              o jogo seja acessível tanto para aqueles familiarizados com tecnologia quanto para aqueles que estão dando 
+              seus primeiros passos no mundo digital, tornando-o uma ferramenta inclusiva e educativa para todas as idades.
             </p>
           </div>
           <div className="about-info-footer">
-            <div className="about-info-footer-text-space">
-              <p className="about-info-footer-text">CURSO</p>
-              <p className="about-info-footer-text-course-name">
-                &nbsp;SISTEMAS DA INFORMAÇÃO
-              </p>
+            <div className="column">
+              <div className="about-info-footer-text-space">
+                <p className="about-info-footer-text">CURSO</p>
+                <p className="about-info-footer-text-course-name">
+                  &nbsp;SISTEMAS DA INFORMAÇÃO
+                </p>
+              </div>
+              <div className="row">
+                <img
+                  src={petLogo}
+                  className="about-info-footer-pet-logo"
+                  alt="Logo do grupo pet"
+                />
+                <img
+                  src={ruralLogo}
+                  className="about-info-footer-rural-logo"
+                  alt="Logo do grupo pet"
+                />
+              </div>
             </div>
             <img
               src={backImage}

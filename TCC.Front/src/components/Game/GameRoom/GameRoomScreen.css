@@ -299,6 +299,11 @@ ul li::before {
   margin-right: 8px;
 }
 
+.game-room-header-img {
+  height: 100px;
+  margin-left: 5px;
+}
+
 .end-game-box {
   align-self: center;
   justify-self: center;

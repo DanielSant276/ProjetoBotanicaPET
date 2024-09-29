@@ -143,12 +143,24 @@ namespace TCC.API.Controllers.SignalR
 
         public async Task CallBingo(string roomId, string playerId)
         {
-            Player player = await _context.Players.FindAsync(playerId);
+            Room room = await _context.Rooms.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == roomId);
+
+            IList<PlayerPointsResponse> points = new List<PlayerPointsResponse>();
+
+            foreach (Player player in room.Players)
+            {
+                Board board = await _context.Boards.FirstOrDefaultAsync(x => x.PlayerId == player.Id);
+                if (board != null)
+                {
+                    PlayerPointsResponse point = new PlayerPointsResponse(player.Name, player.Id, board.Points);
+                    points.Add(point);
+                }
+            }
+
+            // Notifica todos os membros do grupo que um jogador ganhou.
+            await Clients.Group($"game-{roomId}").SendAsync("CallBingo", points);
 
             _storage.ClearRoomData(roomId);
-
-            // Notifica todos os membros do grupo, exceto o solicitante, que o jogador chamou "Bingo".
-            await Clients.Group($"game-{roomId}").SendAsync("CallBingo", player.Name, player.Id);
         }
 
         public async Task HandlePlayerDisconnection(string roomId, string playerId)

@@ -127,7 +127,7 @@ export default function ListRooms() {
       setRoomChosed(newRoom);
     }
     else {
-      alert("Ocorreu um erro na criação da sala");
+      showError("Ocorreu um erro na criação da sala", "errorMessage");
       return;
     }
     

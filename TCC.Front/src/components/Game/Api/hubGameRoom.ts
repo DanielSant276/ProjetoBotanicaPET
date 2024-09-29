@@ -92,7 +92,7 @@ export const gameCallBingo = (connection: HubConnection, roomId: string, playerI
   connection.invoke("CallBingo", roomId, playerId);
 }
 
-export const gameEndGame = (connection: HubConnection, callback: (playerName: string, playerToken: string) => void): void => {
+export const gameEndGame = (connection: HubConnection, callback: (ranking: IRanking[]) => void): void => {
   // debugger;
   connection.on("CallBingo", callback);
 };

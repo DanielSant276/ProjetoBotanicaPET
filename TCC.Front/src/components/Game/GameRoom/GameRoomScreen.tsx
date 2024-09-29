@@ -67,16 +67,12 @@ export default function GameRoomScreen() {
 
   const [boardNumbers, setBoardNumbers] = useState<number[]>([]);
 
-  const [ranking, setRanking] = useState<IRanking[]>([{playerId: 'a', playerName: 'Fernanda', playerPoint: 600},
-    {playerId: 'a', playerName: 'WWWWWWWWWW', playerPoint: 400},
-    {playerId: 'a', playerName: 'teste3', playerPoint: 300},
-    {playerId: 'a', playerName: 'teste4', playerPoint: 200}]);
+  const [ranking, setRanking] = useState<IRanking[]>([]);
 
   const [playerName, setPlayerName] = useState<string>("");
 
   const [openHelpRoom, setOpenHelpRoom] = useState<boolean>(false);
-  const [winningPlayer, setWinningPlayer] = useState<string>("a");
-  const [winningPlayerToken, setWinningPlayerToken] = useState<string>("");
+  const [winningPlayer, setWinningPlayer] = useState<string>("");
 
   const [startScreenModal, setStartScreenModal] = useState<boolean>(false);
   const [startSecondCount, setStartSecondCount] = useState<number>(/* 20 */ 3);
@@ -222,9 +218,9 @@ export default function GameRoomScreen() {
         });
       });
 
-      gameEndGame(connection, (playerName: string, playerToken: string) => {
-        setWinningPlayer(playerName);
-        setWinningPlayerToken(playerToken);
+      gameEndGame(connection, (ranking: IRanking[]) => {
+        setRanking(ranking);
+        setWinningPlayer(ranking[0].playerName);
       });
     }
   }, [connection, gameId, userToken, startScreenModal]);
@@ -250,17 +246,17 @@ export default function GameRoomScreen() {
   }, [nextNumberTimer]);
 
   // useEffect para mostrar um alerta quando o jogo é vencido
-  useEffect(() => {
-    if (winningPlayer !== "") {
-      if (userToken === winningPlayerToken) {
-        setNextNumberTimer(-1);
-        showError('Você gannhou o jogo', "errorMessage");
-      }
-      else {
-        showError(`O Jogador ${winningPlayer} ganhou o jogo!`, "errorMessage");
-      }
-    }
-  }, [winningPlayer]);
+  // useEffect(() => {
+  //   if (winningPlayer !== "") {
+  //     if (userToken === winningPlayerToken) {
+  //       setNextNumberTimer(-1);
+  //       showError('Você gannhou o jogo', "errorMessage");
+  //     }
+  //     else {
+  //       showError(`O Jogador ${winningPlayer} ganhou o jogo!`, "errorMessage");
+  //     }
+  //   }
+  // }, [winningPlayer]);
 
   return (
     <Fragment>
