@@ -25,7 +25,6 @@ import homeButton from "../../../imgs/icons/home.png";
 import helpButton from "../../../imgs/icons/help.png";
 import { useNavigate } from "react-router-dom";
 import { useErrorModal } from "../ErrorModal/ErrorModalProvider";
-import PlayerBox from "./PlayerBox";
 import { Modal } from "@mui/material";
 import RulesModal from "../GameRoom/RulesModal";
 
@@ -219,7 +218,32 @@ export default function Rooms({ user, setUser, roomInfo, resetRoom }: Props) {
 
               <div className="room-players column">
                 {players?.map((player, index) => (
-                  <PlayerBox player={player} index={index} addMarginBottom={players.length - 1 !== index} />
+                  <div
+                    className={
+                      player.ready
+                        ? "room-player-ready"
+                        : "room-player-not-ready"
+                    }
+                  >
+                    <div className="room-player-box-intern">
+                      <p
+                        className={
+                          player.ready
+                            ? "room-player-ready-name-text"
+                            : "room-player-not-ready-name-text"
+                        }
+                      >
+                        {player.name}
+                      </p>
+                      <div
+                        className={
+                          player.ready
+                            ? "room-ready-light"
+                            : "room-not-ready-light"
+                        }
+                      />
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>

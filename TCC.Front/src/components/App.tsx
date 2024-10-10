@@ -6,6 +6,8 @@ import plantsCircleExtern from "../imgs/layout/plants-wheel-extern.png";
 import play from "../imgs/icons/play.png";
 import infoProject from "../imgs/icons/info-project.png";
 import infoPlants from "../imgs/icons/info-plants.png";
+import petLogo from "../imgs/layout/logo_10anos.png";
+import labFBotLogo from "../imgs/layout/logo preto e branco labfbot.png";
 import { useNavigate } from "react-router-dom";
 
 export default function App() {
@@ -20,6 +22,18 @@ export default function App() {
     <div>
       <Fragment>
         <div className="main-screen column">
+          <div className="logos-imgs">
+            <img
+              src={petLogo}
+              className="pet-logo"
+              alt="Logo do pet"
+            />
+            <img
+              src={labFBotLogo}
+              className="labfbot-logo"
+              alt="Logo do laboratório de botânica"
+            />
+          </div>
           <div className="title-space">
             <div className="title-box column">
               <p className="title-logo">BINGO</p>

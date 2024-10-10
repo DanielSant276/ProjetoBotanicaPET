@@ -467,3 +467,51 @@ ul li::before {
   font-size: 35px;
   font-family: "Gotham-Black";
 }
+
+@media (max-width: 1326px) {
+  .game-room-main-grid {
+    width: 80%;
+  }
+  
+  .game-room-footer-content {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1156px) {
+  .game-room-main-grid {
+    width: 90%;
+  }
+  
+  .game-room-footer-content {
+    width: 90%;
+  }
+}
+
+@media (max-height: 751px) {
+  .end-game-header-img-end-game {
+    top: 100px
+  }
+   
+  .end-game-header-img-victory {
+    top: 145px
+  }
+   
+  .end-game-header-winner-player {
+    top: 220px
+  }
+   
+  .end-game-header-img-stage {
+    top: 230px;
+  }
+}
+
+@media (max-height: 746px) {
+  .game-room-header {
+    margin-top: 8px
+  }
+
+  .game-room-footer-content {
+    margin-top: 10px;
+  }
+}

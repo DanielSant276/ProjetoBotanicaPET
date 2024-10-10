@@ -33,5 +33,8 @@ namespace TCC.API.Models
 
         [MaxLength(1500)]
         public string References { get; set; }
+
+        [MaxLength(1500)]
+        public string Summary { get; set; }
     }
 }

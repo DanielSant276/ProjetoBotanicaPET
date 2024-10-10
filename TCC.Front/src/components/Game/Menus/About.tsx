@@ -3,7 +3,8 @@ import plantLogo from "../../../imgs/layout/plants-logo-bingo.png";
 import aboutImage from "../../../imgs/layout/about-image.png";
 import backImage from "../../../imgs/icons/back.png";
 import petLogo from "../../../imgs/layout/logo_10anos.png"
-import ruralLogo from "../../../imgs/layout//rural_logo01.png"
+import ruralLogo from "../../../imgs/layout/rural_logo01.png"
+import labFBotLogo from "../../../imgs/layout/logo preto e branco labfbot.png";
 import { useNavigate } from "react-router-dom";
 
 export default function About() {
@@ -61,6 +62,11 @@ export default function About() {
                   src={petLogo}
                   className="about-info-footer-pet-logo"
                   alt="Logo do grupo pet"
+                />
+                <img
+                  src={labFBotLogo}
+                  className="about-info-footer-labfbot-logo"
+                  alt="Logo do laboratório de botânica"
                 />
                 <img
                   src={ruralLogo}

@@ -23,7 +23,7 @@ export default function RulesModal({ setOpenHelpRoom}: Props){
           <div className="game-room-modal-text-content">
             <div className="game-room-modal-text-background" />
             <p className="game-room-modal-text">
-              A cada x segundos, uma nova planta será sorteada. As plantas não 
+              A cada 5 segundos, uma nova planta será sorteada. As plantas não 
               marcadas aparecem em preto e branco na sua cartela, enquanto as 
               já marcadas ficam coloridas. A cada planta marcada, você ganha 
               100 pontos. Para vencer, você deve acumular 600 pontos e, além 

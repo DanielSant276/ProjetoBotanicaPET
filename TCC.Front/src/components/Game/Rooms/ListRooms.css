@@ -247,3 +247,41 @@
   height: 45px;
   cursor: pointer;
 }
+
+
+@media (max-width: 1326px) {
+  .rooms-grid {
+    width: 80%;
+  }
+  
+  .rooms-footer-content {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1156px) {
+  .rooms-grid {
+    width: 90%;
+  }
+  
+  .rooms-footer-content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1051px) {
+  .rooms-footer-name-input {
+    width: calc(60% - 20px);
+  }
+}
+
+
+@media (max-height: 751px) {
+  .rooms-grid-box, .rooms-green-grid-box, .rooms-grid-box-number {
+    height: 100px;
+  }
+
+  .rooms-grid-box-text-number {
+    font-size: 75px;
+  }
+}

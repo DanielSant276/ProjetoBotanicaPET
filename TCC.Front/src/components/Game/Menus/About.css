@@ -108,7 +108,48 @@
   margin-right: 20px;
 }
 
+.about-info-footer-labfbot-logo {
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
+}
+
 .about-info-footer-rural-logo {
   width: 200px;
   height: 80px;
+}
+
+@media (max-width: 1101px) {
+  .about-image-space {
+    width: 40%;
+  }
+
+  .about-text-space {
+    width: 60%;
+  }
+
+  .about-image {
+    object-position: 60% center;
+  }
+}
+
+@media (max-height: 751px) {
+  .about-title {
+    margin-bottom: 30px;
+  }
+
+  .about-info-title {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-height: 731px) {
+  .about-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .about-info-title {
+    margin-bottom: 20px;
+  }
 }

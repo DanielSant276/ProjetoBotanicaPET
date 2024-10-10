@@ -1,3 +1,18 @@
+.logos-imgs {
+  position: fixed;
+  left: 50px;
+  top: 50px;
+}
+
+.pet-logo {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.labfbot-logo {
+  width: 50px;
+}
+
 .title-space {
   width: 100%;
   justify-content: center;
@@ -161,4 +176,22 @@
 
 .info-plants-icon {
   margin-left: 330px;
+}
+
+@media (max-height: 751px) {
+  .play-icon, .info-project-icon, .info-plants-icon {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+@media (max-height: 701px) {
+  .play-icon, .info-project-icon, .info-plants-icon {
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
 }

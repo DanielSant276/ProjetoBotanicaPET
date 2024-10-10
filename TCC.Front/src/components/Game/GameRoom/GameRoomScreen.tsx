@@ -75,7 +75,7 @@ export default function GameRoomScreen() {
   const [winningPlayer, setWinningPlayer] = useState<string>("");
 
   const [startScreenModal, setStartScreenModal] = useState<boolean>(false);
-  const [startSecondCount, setStartSecondCount] = useState<number>(/* 20 */ 3);
+  const [startSecondCount, setStartSecondCount] = useState<number>(/* 20 */1);
 
   const [gridSelected, setGridSelected] = useState<boolean[]>(
     Array(boardNumbers.length).fill(false)
@@ -119,7 +119,6 @@ export default function GameRoomScreen() {
       const fetchPlayer = async () => {
         const playerData = await verifyPlayerInRoom(userToken, gameId);
 
-        debugger;
         if (!playerData) {
           window.location.href = `/Rooms`;
         }
@@ -236,8 +235,6 @@ export default function GameRoomScreen() {
           numbersAlreadyDrawn.length < imageListColored.length
         ) {
           gameGetNumber(connection, gameId, numbersAlreadyDrawn.length);
-        } else {
-          setNextNumberTimer(-1);
         }
       }, 1000);
 
@@ -364,20 +361,12 @@ export default function GameRoomScreen() {
                         O jogo vai começar!
                       </p>
                       <ul>
-                        <li className="game-room-modal-advice-text">A cada x segundos, uma planta será sorteada</li>
+                        <li className="game-room-modal-advice-text">A cada 5 segundos, uma planta será sorteada</li>
                         <li className="game-room-modal-advice-text">Marque as plantas na sua cartela quando forem sorteadas</li>
                         <li className="game-room-modal-advice-text">O primeiro a marcar toda a cartela e clicar no botão Bingo ganha</li>
                         <li className="game-room-modal-advice-text">Informações mais detalhadas no botão ajuda (?)</li>
                       </ul>
                     </div>
-                  </div>
-                  <div className="game-room-modal-create-room">
-                    <img
-                      src={backButton}
-                      className="game-room-modal-back-button"
-                      onClick={() => setStartScreenModal(false)}
-                      alt=""
-                    />
                   </div>
                 </div>
               </div>

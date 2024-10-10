@@ -70,9 +70,8 @@ export default function Info() {
                   <p className="info-box-title">{plant.name.toUpperCase()}</p>
                   <p className="info-box-title-scientific">{plant.scientificName}</p>
                   <p className="info-box-full-text info-space">Parte Utilizada: {plant.usedPart}</p>
-                  {/* <p className="info-box-full-text">{plant.about.split("Indicações:")[0]}</p>
-                  <br/> */}
-                  <p className="info-box-full-text info-space">Indicações: {plant.about.split("Indicações:")[1].slice(0, 100)}... e outros</p>
+                  <br/>
+                  <p className="info-box-full-text info-space">{plant.summary}</p>
                   <div
                     className="info-box-show-more"
                     onClick={() => handleOpenMoodal(plant)}

@@ -6,4 +6,5 @@ export interface IPlant {
   about: string;
   curiosity: string;
   references: string;
+  summary: string;
 }

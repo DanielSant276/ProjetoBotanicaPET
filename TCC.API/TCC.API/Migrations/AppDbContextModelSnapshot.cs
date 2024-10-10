@@ -72,6 +72,11 @@ namespace TCC.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("varchar(1500)");
+
                     b.Property<string>("UsedPart")
                         .IsRequired()
                         .HasMaxLength(255)
