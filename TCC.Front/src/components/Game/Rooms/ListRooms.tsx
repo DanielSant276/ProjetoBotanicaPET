@@ -97,7 +97,6 @@ export default function ListRooms() {
 
   // Cria uma nova sala e redireciona o jogador para ela
   const createNewRoom = async () => {
-
     if (newRoomName === "") {
       setInvalidName("Insira um nome para a nova sala");
       return;
@@ -233,7 +232,9 @@ export default function ListRooms() {
     }, 500);
 
     return () => clearTimeout(debounceFunction);
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user]); 
+  
+  // eslint-disable-line react-hooks/exhaustive-deps
 
   // carrega as palavras inválidas a partir de um arquivo de texto
   useEffect(() => {

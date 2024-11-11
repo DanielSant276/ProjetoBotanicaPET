@@ -47,7 +47,7 @@ const imageListBlackWhite = imagesBlackWhite
   .keys()
   .map((image) => imagesBlackWhite(image));
 
-let timerNumber = 1;
+let timerNumber = 5;
 
 export default function GameRoomScreen() {
   const { gameId } = useParams();

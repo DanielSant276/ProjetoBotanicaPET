@@ -132,11 +132,6 @@ namespace TCC.API.Controllers.SignalR
             }
         }
 
-        public async Task ChatMessage(string roomId, string msg)
-        {
-            await Clients.Group($"room-{roomId}").SendAsync("Chat", msg);
-        }
-
         public async Task CloseConection(string roomId, string playerId)
         {
             Player player = await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId);
@@ -184,6 +179,11 @@ namespace TCC.API.Controllers.SignalR
                 _context.Rooms.Remove(room);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task ChatMessage(string roomId, string msg)
+        {
+            await Clients.Group($"room-{roomId}").SendAsync("Chat", msg);
         }
     }
 }
