@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="297mm" height="210mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 29700 21000"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <font id="FontID0" horiz-adv-x="794" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="500">
+	<font-face 
+		font-family="Gotham Black">
+		<font-face-src>
+			<font-face-name name="Gotham-Black"/>
+		</font-face-src>
+	</font-face>
+   <missing-glyph><path d="M0 0z"/></missing-glyph>
+   <glyph unicode="A" horiz-adv-x="794" d="M5.99525 0l204.014 0 49.9864 125.005 270 0 50.9986 -125.005 208.004 0 -297.991 705.006 -187.001 0 -298.011 -705.006zm311.013 275.996l78.9894 199.011 77.9967 -199.011 -156.986 0z"/>
+   <glyph unicode="L" horiz-adv-x="615" d="M61.9963 0l533.013 0 0 170.008 -339.004 0 0 529.996 -194.009 0 0 -700.004z"/>
+   <glyph unicode="N" horiz-adv-x="785" d="M61.9963 0l192.004 0 0 384.007 299.003 -384.007 169.989 0 0 700.004 -191.984 0 0 -370.012 -288.006 370.012 -181.006 0 0 -700.004z"/>
+   <glyph unicode="O" horiz-adv-x="831" d="M414.003 -13.9954c216.004,0 377.993,163.001 377.993,363.997l0 2.00491c0,200.997 -160.003,361.992 -375.988,361.992 -216.004,0 -378.012,-163.001 -378.012,-363.997l0 -2.00491c0,-200.997 160.003,-361.992 376.007,-361.992zm2.00491 174.991c-106.007,0 -179.001,88.0017 -179.001,189.006l0 2.00491c0,100.985 70.9892,187.001 176.996,187.001 107,0 179.994,-88.0017 179.994,-189.006l0 -2.00491c0,-101.004 -70.9892,-187.001 -177.989,-187.001z"/>
+   <glyph unicode="S" horiz-adv-x="652" d="M336.999 -11.9905c170.008,0 283.003,84.9846 283.003,227.995l0 2.00491c0,131 -100.012,182.991 -261.008,217.99 -96.9946,21.9956 -120.995,36.0104 -120.995,67.9916l0 2.00491c0,25.0127 23.0077,45.0033 69.9965,45.0033 61.9963,0 132.012,-24.0005 195.994,-69.0038l97.0141 137.015c-76.0112,60.9842 -168.996,92.9848 -288.006,92.9848 -168.003,0 -270.993,-93.997 -270.993,-223.985l0 -2.00491c0,-144.003 115,-186.008 263.986,-220.014 95.0091,-21.9956 118.017,-37.9959 118.017,-66.9989l0 -1.98544c0,-30.0152 -28.0103,-48.0009 -80.0016,-48.0009 -81.0137,0 -157.998,29.003 -227.002,83.9919l-108.012 -128.995c86.0163,-77.0039 204.014,-115.993 328.006,-115.993z"/>
+   <glyph unicode="V" horiz-adv-x="759" d="M289.991 -5.00253l180.013 0 283.996 705.006 -213.007 0 -158.991 -443.006 -159.01 443.006 -216.997 0 283.996 -705.006z"/>
+  </font>
+  <style type="text/css">
+   <![CDATA[
+    @font-face { font-family:"Gotham Black";font-variant:normal;font-style:normal;font-weight:500;src:url("#FontID0") format(svg)}
+    .fil0 {fill:#CF4C4A}
+    .fil2 {fill:#DCC6B3}
+    .fil1 {fill:#E8D3C3}
+    .fnt0 {font-weight:500;font-size:513.74px;font-family:'Gotham Black'}
+   ]]>
+  </style>
+   <clipPath id="id0">
+    <rect x="12941.16" y="12222.34" width="4318" height="1507.07"/>
+   </clipPath>
+   <clipPath id="id1">
+    <path d="M17259.15 13729.41l0 -1507.06 -4317.99 0 0 1507.06 4317.99 0z"/>
+   </clipPath>
+   <clipPath id="id2">
+    <rect x="12941.16" y="12222.34" width="4318" height="1507.07"/>
+   </clipPath>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g style="clip-path:url(#id0)">
+  </g>
+  <g style="clip-path:url(#id1)">
+   <image x="12941.15" y="12222.35" width="4318" height="1507.07" xlink:href="NOVA SALA SVG_Images\NOVA SALA SVG_ImgID1.png"/>
+  </g>
+  <g style="clip-path:url(#id2)">
+  </g>
+  <rect class="fil0" x="12858.7" y="11826.33" width="4161.77" height="1488.68" rx="395.7" ry="5.53"/>
+  <path class="fil1" d="M13190.57 11981.88l3617.21 0c65.31,0 118.71,53.43 118.71,118.73l0 1011.39c0,65.3 -53.41,118.73 -118.71,118.73l-3617.21 0c-65.3,0 -118.71,-53.42 -118.71,-118.73l0 -1011.39c0,-65.31 53.4,-118.73 118.71,-118.73z"/>
+  <path class="fil2" d="M13445.05 12056.87l3382.9 0c61.08,0 111.02,49.97 111.02,111.04l0 945.88c0,61.07 -49.95,111.04 -111.02,111.04l-3382.9 0c-61.07,0 -111.02,-49.96 -111.02,-111.04l0 -945.88c0,-61.08 49.94,-111.04 111.02,-111.04z"/>
+  <text x="13346.48" y="12773.32"  class="fil0 fnt0">NOVA SALA</text>
+ </g>
+</svg>

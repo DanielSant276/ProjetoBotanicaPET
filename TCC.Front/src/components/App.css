@@ -1,0 +1,197 @@
+.logos-imgs {
+  position: fixed;
+  left: 50px;
+  top: 50px;
+}
+
+.pet-logo {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.labfbot-logo {
+  width: 50px;
+}
+
+.title-space {
+  width: 100%;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 70px;
+}
+
+.title-box {
+  position: relative;
+}
+
+.title-logo, .title-logo-2, .title-logo-3 {
+  font-family: 'Zoika';
+  font-size: 120px;
+}
+
+.title-logo-2 {
+  font-family: 'Gotham-Light';
+  font-size: 32px;
+}
+
+.title-logo-3 {
+  font-family: 'Gotham-Book';
+  font-size: 32px;
+}
+
+.plant-logo {
+  /* width: 90px; */
+  height: 140px;
+  position: absolute;
+  right: -65px;
+}
+
+.buttons-space {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  justify-content: center;
+  overflow: hidden;
+  align-items: flex-end;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+@keyframes transform {
+  from {
+    transform: translateY(50%);
+  }
+  to {
+    transform: translateY(50%);
+  }
+}
+
+@keyframes rotate-right {
+  to {
+    transform: rotate(360deg);
+  }
+  from {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rotate-left {
+  to {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scale(1);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  to {
+    transform: scale(1.1);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.circle-image-intern, .circle-image-extern {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+  height: 195%;
+}
+
+.circle-image-extern {
+  height: 185%;
+  img {
+    animation: rotate-right 25s linear;
+  }
+}
+
+.circle-image-intern {
+  img {
+    animation: rotate-left 25s linear;
+  }
+}
+
+.play-icon, .info-project-icon, .info-plants-icon {
+  flex-direction: column;
+  position: absolute;
+  bottom: 75px;
+  align-items: center;
+  cursor: pointer;
+  p {
+    position: absolute;
+    bottom: -30px;
+    font-family: 'Gotham-Bold';
+    font-size: 18px;
+    color: var(--red-color);
+    text-align: center;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  img {
+    width: 130px;
+    height: 130px;
+    transition: transform 0.3s box-shadow 0.3s;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
+
+  &:hover {
+    p {
+      display: flex;
+      animation: fadeIn 0.3s forwards;
+    }
+
+    img {
+      animation: grow 0.3s forwards;
+    }
+  }
+}
+
+.play-icon {
+  margin-right: 330px;
+}
+
+.info-project-icon {}
+
+.info-plants-icon {
+  margin-left: 330px;
+}
+
+@media (max-height: 751px) {
+  .play-icon, .info-project-icon, .info-plants-icon {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+@media (max-height: 701px) {
+  .play-icon, .info-project-icon, .info-plants-icon {
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}

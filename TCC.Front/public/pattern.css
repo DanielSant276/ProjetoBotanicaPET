@@ -1,0 +1,169 @@
+/*Configuração padrão de CSS*/
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section, div, a {
+  display: flex;
+}
+
+:root {
+  --main-color: #F9EFE5;
+  --dark-main-color: #DCC6B3;
+  --green-color: #52614B;
+  --green-color-dark: #424e3d;
+  --red-color: #CF4C4A;
+}
+
+p {
+  /* font-family: Antic Didone; */
+  font-style: normal;
+  font-weight: normal;
+  color: var(--green-color);
+}
+
+a, .link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.align {
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.not-selectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.white-color {
+  color: #ffffff
+}
+
+.red-color {
+  color: #ff0000 !important
+}
+
+.text-center {
+  text-align: center;
+}
+
+.visible {
+  display: flex
+}
+
+.not-visible {
+  display: none;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+}
+
+p {
+  user-select: none;
+}
+
+.main-screen {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--main-color);
+}
+
+@font-face {
+  font-family: 'Gotham-Black';
+  src: url('fonts/Gotham-Black.otf');
+}
+
+@font-face {
+  font-family: 'Gotham-Bold';
+  src: url('fonts/Gotham-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Bold-Italic';
+  src: url('fonts/Gotham-Bold-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Book';
+  src: url('fonts/Gotham-Book.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Book-Italic';
+  src: url('fonts/Gotham-Book-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Light';
+  src: url('fonts/Gotham-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Light-Italic';
+  src: url('fonts/Gotham-Light-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Medium';
+  src: url('fonts/Gotham-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham-Thin';
+  src: url('fonts/Gotham-Thin.otf');
+}
+
+@font-face {
+  font-family: 'Gotham-Thin-Italic';
+  src: url('fonts/Gotham-Thin-Italic.otf');
+}
+
+@font-face {
+  font-family: 'Gotham-Ultra-Italic';
+  src: url('fonts/Gotham-Ultra-Italic.otf');
+}
+
+@font-face {
+  font-family: 'Klavika-Regular';
+  src: url('fonts/Klavika-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Zoika';
+  src: url('fonts/Zoika.ttf') format('truetype');
+}
+
+.old-main-screen {
+  display: flex;
+  flex-direction: column;
+  background-color: #282c34;
+  min-height: 100vh;
+  min-width: 100vw;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  p {
+    /* font-family: Antic Didone; */
+    font-style: normal;
+    font-weight: normal;
+    color: #ffffff;
+  }
+}

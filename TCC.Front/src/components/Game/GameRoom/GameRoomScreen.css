@@ -1,0 +1,517 @@
+.game-room-background-image-space {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.game-room-background-image {
+  position: absolute;
+  bottom: 0;
+  transform: translate(42%, 50%) rotate(31deg);
+  height: 150%;
+  z-index: 0;
+}
+
+.game-room-header {
+  margin-top: 32px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.game-room-header-title {
+  font-size: 120px;
+  font-family: 'Zoika';
+}
+
+.game-room-content {
+  align-items: center;
+  justify-content: center;
+}
+
+.game-room-main-grid {
+  width: 70%;
+  height: 480px;
+  border: 5px solid var(--green-color);
+  z-index: 1;
+}
+
+.game-room-names {
+  width: 30%;
+  border-right: 5px solid var(--green-color);
+  background-image: url("../../../imgs/layout/texture-card.png");
+  background-size: cover;
+}
+
+.game-room-name {
+  padding: 16px 32px;
+  border-bottom: 5px solid var(--green-color);
+  justify-content: center;
+}
+
+.game-room-name-title {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Gotham-Bold';
+}
+
+.game-room-players {
+  padding: 32px 32px;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-room-player {
+  width: 95%;
+  height: 55px;
+  background-color: var(--green-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-room-player-box-intern {
+  position: relative;
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 5px 3px 3px 5px;
+}
+
+.game-room-player-name-text {
+  text-align: center;
+  color: var(--green-color);
+  font-size: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 4px;
+  font-family: 'Gotham-Medium';
+}
+
+.game-room-game-box {
+  position: relative;
+  width: 70%;
+}
+
+.game-room-game-box-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: var(--main-color);
+  filter: brightness(0.85);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.game-room-footer {
+  z-index: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-room-footer-content {
+  width: 70%;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-room-back-button, .game-room-att-button {
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+
+.game-room-att-button {
+  margin-left: 25px;
+}
+
+.game-room-footer-new-room {
+  width: 160px;
+  height: 50px;
+  background-color: var(--red-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.game-room-footer-new-room-intern {
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 3px 3px 5px;
+}
+
+.game-room-footer-new-room-text {
+  text-align: center;
+  color: var(--red-color);
+  font-size: 20px;
+  font-family: 'Gotham-Bold';
+}
+
+.game-room-modal-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-room-modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: fit-content;
+  border: 5px solid var(--green-color);
+  background-image: url('../../../imgs/layout/texture-card.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 25px;
+}
+
+.game-room-modal-content {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.game-room-modal-title {
+  text-align: center;
+  color: var(--green-color);
+  font-size: 18px;
+  font-family: 'Gotham-Bold';
+  margin-bottom: 8px;
+}
+
+.game-room-modal-header {
+  background-color: var(--green-color);
+  border: 5px solid var(--green-color);
+  margin-top: -1px;
+  border-radius: 15px 15px 0px 0px;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.game-room-modal-header-circle {
+  width: 10px;
+  height: 10px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+}
+
+.game-room-modal-header-title {
+  color: var(--main-color);
+  font-size: 25px;
+  font-family: 'Gotham-Medium';
+  margin: 0px 20px;
+  text-align: center;
+}
+
+.game-room-modal-logo {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.game-room-modal-logo-title {
+  font-size: 70px;
+  font-family: 'Zoika';
+}
+
+.game-room-modal-logo-img {
+  height: 60px;
+  margin-left: 5px;
+}
+
+.game-room-modal-text-content {
+  width: calc(100% - 80px);
+  height: auto;
+  margin: 16px 32px;
+  border: 1px dashed #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-room-modal-text-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--main-color);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+}
+
+.game-room-modal-text {
+  font-size: 19px;
+  font-family: 'Gotham-Medium';
+  text-align: justify;
+  position: relative;
+}
+
+.game-room-modal-create-room {
+  justify-content: space-between;
+}
+
+.game-room-modal-back-button {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-room-modal-advice-text-content {
+  width: calc(100% - 80px);
+  height: auto;
+  margin: 16px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-room-modal-advice-text {
+  font-size: 19px;
+  font-family: 'Gotham-Medium';
+  text-align: justify;
+  position: relative;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li::before {
+  content: '•';
+  color: inherit;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.game-room-header-img {
+  height: 100px;
+  margin-left: 5px;
+}
+
+.end-game-box {
+  align-self: center;
+  justify-self: center;
+
+  width: 80%;
+  background-color: var(--green-color);
+  border: 10px solid var(--green-color);
+  /* margin-top: 200px; */
+  border-radius: 15px;
+  margin-top: 100px;
+
+  /* background: url('../../../imgs/layout/texture-green.png');
+  background-size: cover; */
+}
+
+.end-game-box-header {
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 160px;
+}
+
+.end-game-header-circle {
+  min-width: 15px;
+  height: 15px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+}
+
+.end-game-box-ranking {
+  display: grid;
+  grid-gap: 10px;
+  margin: 0px 50px 40px 50px;
+}
+
+.end-game-box-ranking > .end-game-ranking-row:nth-child(-n+2) {
+  grid-template-columns: 1fr;
+}
+
+.end-game-box-ranking {
+  grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+  grid-auto-rows: auto; /* Faz as linhas crescerem conforme o conteúdo */
+}
+
+.end-game-ranking-row {
+  background-color: var(--main-color);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  height: 50px;
+}
+
+.end-game-ranking-label, .end-game-ranking-winner-label {
+  width: 160px;
+  height: 50px;
+  background-color: var(--red-color);
+  border-radius: 5px;
+}
+
+.end-game-ranking-winner-label {
+  background: linear-gradient(90deg, 
+  #8F6010 0%,
+  #C7943D 3%,
+  #AE6E1F 10%,
+  #FFF49C 35%,
+  #73511B 70%,
+  #AE6E1F 75%,
+  #C6923C 90%
+  );
+}
+
+.end-game-ranking-label-intern, .end-game-ranking-winner-label-intern {
+  background-color: #E0D5C7;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 3px 3px 5px;
+}
+
+.end-game-ranking-label-text, .end-game-ranking-winner-label-text {
+  text-align: center;
+  color: var(--red-color);
+  font-size: 16px;
+  font-family: 'Gotham-Black';
+}
+
+.end-game-ranking-winner-label-text {
+  font-size: 19px;
+  background: linear-gradient(90deg, 
+  #8F6010 0%,
+  #C7943D 4.62%,
+  #AE6E1F 15.38%,
+  #73511B 53.85%,
+  #AE6E1F 61.54%,
+  #C6923C 84.62%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.end-game-ranking-player-info {
+  justify-content: space-between;
+  margin: 0px 20px 10px 20px;
+  align-self: flex-end;
+  width: 100%;
+}
+
+.end-game-ranking-player-name {
+  font-size: 20px;
+  font-family: 'Gotham-Black';
+  color: #000000;
+}
+
+.end-game-ranking-player-points {
+  font-size: 16px;
+  font-family: 'Gotham-Black';
+  color: #000000;
+}
+
+.end-game-home-button {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  align-self: flex-end;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+
+.end-game-header-img-end-game, .end-game-header-img-victory, .end-game-header-img-stage, .end-game-header-winner-player{
+  top: 250px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.end-game-header-img-end-game {
+  top: 120px;
+  width: 320px;
+  z-index: 3;
+}
+
+.end-game-header-img-victory {
+  top: 165px;
+  width: 130px;
+  z-index: 2;
+}
+
+.end-game-header-img-stage {
+  width: 400px;
+  z-index: 1;
+}
+
+.end-game-header-winner-player {
+  top: 240px;
+  z-index: 2;
+  color: #CF4B49;
+  font-size: 35px;
+  font-family: "Gotham-Black";
+}
+
+@media (max-width: 1326px) {
+  .game-room-main-grid {
+    width: 80%;
+  }
+  
+  .game-room-footer-content {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1156px) {
+  .game-room-main-grid {
+    width: 90%;
+  }
+  
+  .game-room-footer-content {
+    width: 90%;
+  }
+}
+
+@media (max-height: 751px) {
+  .end-game-header-img-end-game {
+    top: 100px
+  }
+   
+  .end-game-header-img-victory {
+    top: 145px
+  }
+   
+  .end-game-header-winner-player {
+    top: 220px
+  }
+   
+  .end-game-header-img-stage {
+    top: 230px;
+  }
+}
+
+@media (max-height: 746px) {
+  .game-room-header {
+    margin-top: 8px
+  }
+
+  .game-room-footer-content {
+    margin-top: 10px;
+  }
+}
