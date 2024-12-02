@@ -33,16 +33,18 @@ import { useErrorModal } from "../ErrorModal/ErrorModalProvider";
 import RulesModal from "./RulesModal";
 
 const imagesColored = require.context(
-  "../../../imgs/plants/testeColorido",
+  "../../../imgs/plants/colorido",
   true
 );
 const imageListColored = imagesColored
   .keys()
   .map((image) => imagesColored(image));
+
 const imagesBlackWhite = require.context(
-  "../../../imgs/plants/testePretoBranco",
+  "../../../imgs/plants/pretoBranco",
   true
 );
+
 const imageListBlackWhite = imagesBlackWhite
   .keys()
   .map((image) => imagesBlackWhite(image));
@@ -220,6 +222,7 @@ export default function GameRoomScreen() {
       gameEndGame(connection, (ranking: IRanking[]) => {
         setRanking(ranking);
         setWinningPlayer(ranking[0].playerName);
+        setNextNumberTimer(-1);
       });
     }
   }, [connection, gameId, userToken, startScreenModal]);

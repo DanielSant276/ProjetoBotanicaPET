@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./PlayerBoard.css";
 import { useErrorModal } from "../ErrorModal/ErrorModalProvider";
 
@@ -14,7 +14,7 @@ export function PlayerBoard({
   gridSelected,
   setGridSelected
 }: Props) {
-  const [gridPositions] = useState<number[]>([0, 1, 2, 3, 4, 5]);
+  const [gridPositions, setGridPositions] = useState<number[]>(boardNumbers);
   const { showError } = useErrorModal();
 
   // Função para verificar se um número deve ser marcado no tabuleiro
@@ -38,6 +38,10 @@ export function PlayerBoard({
       }
     }
   };
+
+  useEffect(() => {
+    setGridPositions(boardNumbers)
+  }, [boardNumbers]);
 
   return (
     <div className="player-board column">
